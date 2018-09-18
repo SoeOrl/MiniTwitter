@@ -5,58 +5,84 @@
  */
 
 function validateForm()
-{
-    validatePassword();
-    validateName();
-    validateInvalidChar();
-   return false;
+{var errorDiv = document.getElementById("errorMessage");
+    errorDiv.innerHTML = "";
+    var bools = [];
+    bools.push(validatePassword());
+        if (bools.includes(false))
+    {
+        return false;
+    }
+    bools.push(validateName());
+        if (bools.includes(false))
+    {
+        return false;
+    }
+    bools.push(validateInvalidChar());
+        if (bools.includes(false))
+    {
+        return false;
+    }
+    bools.push(validatePasswordSecurity());
+    if (bools.includes(false))
+    {
+        return false;
+    }
+    
+    errorDiv.innerHTML = "";
+    errorDiv.style.display = "none";
+    return true;
 }
 
 function validatePassword()
 {
-        var errorDiv = document.getElementById("errorMessage")
+        var errorDiv = document.getElementById("errorMessage");
 	var password = document.getElementById("password");
+        var passwordError = document.getElementById("password_error");
 	var confirmpassword = document.getElementById("confirmpassword");
         var error_password = document.getElementById("confirmpassword_error");	
-        if(password.value != confirmpassword.value)
+        if(password.value !== confirmpassword.value)
 	{
 		confirmpassword.style.backgroundColor = "yellow";
+                password.style.backgroundColor = "yellow";
 		error_password.style.display = "inline";
-                errorDiv.innerHTML="Error! Password and Confirm Password do not Match"
-                errorDiv.style.display="inline"
+                passwordError.style.display = "inline";
+                errorDiv.innerHTML += "Error! Password and Confirm Password do not Match<br>";
+                errorDiv.style.display="inline";
 		return false;
 	}
 	else
 	{
-		error_password.style.display = "none";
 		confirmpassword.style.backgroundColor = "white";
-                errorDiv.style.display="none";
-                errorDiv.innerHTML = "";
+                password.style.backgroundColor = "white";
+		error_password.style.display = "none";
+                passwordError.style.display = "none";
+    
+               
 		return true;
 	}
 	
 }
 
 function validateName()
-{       var errorDiv = document.getElementById("errorMessage")
+{       var errorDiv = document.getElementById("errorMessage");
 	var name = document.getElementById("fullname");
 	var nameError = document.getElementById("fullname_error");
 	var regex = /[A-Za-z]+\s[A-Za-z]+/;
-        var x = name.value
         if(!regex.test(name.value))
 	{
 		name.style.backgroundColor = "yellow";
 		nameError.style.display = "inline";
-                errorDiv.innerHTML="Error! Name is one word"
-                errorDiv.style.display="inline"
+                errorDiv.innerHTML +="Error! Name is one word<br>";
+                errorDiv.style.display="inline";
 		return false;
 	}
 	else
 	{
 		nameError.style.display = "none";
 		name.style.backgroundColor = "white";
-                errorDiv.style.display="none";
-                errorDiv.innerHTML = "";
+                
+                
 		return true;
 	}
 	
@@ -66,29 +92,48 @@ function validateInvalidChar()
 {       var errorDiv = document.getElementById("errorMessage");
         var formElements = document.forms["signup"].getElementsByTagName("input");
         var regex = /'+/;
-        for (var i = 0;i<formElements.length; i++)
+        var bools = true;
+        //dont iterate over the submit button
+        for (var i = 0;i<formElements.length - 2; i++)
         {
-            if (!regex.test(formElements[i].value))
+            var formString = formElements[i].id +"_error";
+            var formError = document.getElementById(formString);
+            if (regex.test(formElements[i].value))
             {
                 formElements[i].style.backgroundColor = "yellow";
-                var formErrorName = formElements[i].id +"_error";
-                var formError = document.getElementById(formErrorName);
                 formError.style.diplay = "inline";
-                errorDiv.innerHTML="Error! Invalid Char";
+                errorDiv.innerHTML +="Error! Invalid Char '<br>";
                 errorDiv.style.display="inline";
-		return false;
+		bools = false;
             }
+            formElements[i].style.backgroundColor = "white";
+            formError.style.display="none";
         }
-        return true;
+        return bools;
 	
 }
 
 function validatePasswordSecurity()
-{       var errorDiv = document.getElementById("errorMessage")
-	var name = document.getElementById("fullname");
-	var nameError = document.getElementById("fullName_error");
-	var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)$/;
+{       var errorDiv = document.getElementById("errorMessage");
+	var password = document.getElementById("password");
+	var passwordError = document.getElementById("password_error");
+	var regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).+$/;
        
-       //ADD CODE HERE
+        if(!regex.test(password.value))
+	{
+		password.style.backgroundColor = "yellow";
+		passwordError.style.display = "inline";
+                errorDiv.innerHTML += "Error! Password Requires one uppercase, lowercase, and number<br>";
+                errorDiv.style.display="inline";
+		return false;
+	}
+	else
+	{
+		passwordError.style.display = "none";
+		password.style.backgroundColor = "white";
+            
+                
+		return true;
+	}
 	
 }
