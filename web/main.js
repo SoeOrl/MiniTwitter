@@ -8,7 +8,7 @@ function validateForm()
 {
     validatePassword();
     validateName();
-    
+    validateInvalidChar();
    return false;
 }
 
@@ -22,7 +22,7 @@ function validatePassword()
 	{
 		confirmpassword.style.backgroundColor = "yellow";
 		error_password.style.display = "inline";
-                errorDiv.value="Error! Password and Confirm Password do not Match"
+                errorDiv.innerHTML="Error! Password and Confirm Password do not Match"
                 errorDiv.style.display="inline"
 		return false;
 	}
@@ -30,6 +30,8 @@ function validatePassword()
 	{
 		error_password.style.display = "none";
 		confirmpassword.style.backgroundColor = "white";
+                errorDiv.style.display="none";
+                errorDiv.innerHTML = "";
 		return true;
 	}
 	
@@ -38,8 +40,9 @@ function validatePassword()
 function validateName()
 {       var errorDiv = document.getElementById("errorMessage")
 	var name = document.getElementById("fullname");
-	var nameError = document.getElementById("fullName_error");
+	var nameError = document.getElementById("fullname_error");
 	var regex = /[A-Za-z]+\s[A-Za-z]+/;
+        var x = name.value
         if(!regex.test(name.value))
 	{
 		name.style.backgroundColor = "yellow";
@@ -50,20 +53,33 @@ function validateName()
 	}
 	else
 	{
-		error_password.style.display = "none";
-		confirmpassword.style.backgroundColor = "white";
+		nameError.style.display = "none";
+		name.style.backgroundColor = "white";
+                errorDiv.style.display="none";
+                errorDiv.innerHTML = "";
 		return true;
 	}
 	
 }
 
 function validateInvalidChar()
-{       var errorDiv = document.getElementById("errorMessage")
+{       var errorDiv = document.getElementById("errorMessage");
         var formElements = document.forms["signup"].getElementsByTagName("input");
+        var regex = /'+/;
         for (var i = 0;i<formElements.length; i++)
         {
-            //ADD CODE HERE
+            if (!regex.test(formElements[i].value))
+            {
+                formElements[i].style.backgroundColor = "yellow";
+                var formErrorName = formElements[i].id +"_error";
+                var formError = document.getElementById(formErrorName);
+                formError.style.diplay = "inline";
+                errorDiv.innerHTML="Error! Invalid Char";
+                errorDiv.style.display="inline";
+		return false;
+            }
         }
+        return true;
 	
 }
 
