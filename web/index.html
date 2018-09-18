@@ -5,62 +5,71 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        <title>MiniTwitter</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
-	<script src="main.js"></script>
-    </head>
-    <body>
-       <form id="signup" action="registration" method="get" onsubmit="return validateForm();">
-           
-           <div id="errorMessage" class="notVisible"></div><br>
-           
-		<label class="pad_top">Fullname:</label>
-		<input type="text" id="fullname" >
-		<span id="fullname_error" class="errorspan">*</span>
-		<br>
-                
-                <label class="pad_top">Username:</label>
-		<input type="text" id="username" >
-		<span id="username_error" class="errorspan">*</span>
-		<br>
-                
-		<label class="pad_top">Email:</label>
-		<input type="email" id="email" >
-		<span id="email_error" class="errorspan">*</span>
-		<br>
-		
-		<label class="pad_top">Password:</label>
-		<input type="password" id="password" >
-		<span id="password_error" class="errorspan">*</span>
-		<br>
-		
-		<label class="pad_top">Confirm Password:</label>
-		<input type="password" id="confirmpassword" >
-		<span id="confirmpassword_error" class="errorspan">*</span>
-		<br>
-		
-		<label class="pad_top">Date of Birth:</label>
-		<input type="date" id="dateofbirth">
-		<span id="dateofbirth_error" class="errorspan">*</span>
-		<br>
-                
-                <label class="pad_top">Security Question:</label>
-                 <select>
-                    <option value="pet">What was the name of you first pet?</option>
-                    <option value="car">What was the make of your first car?</option>
-                    <option value="school">What was the name of the first school you went to?</option>
-                 </select> 
-		<br>
-                
-                <label class="pad_top">Answer:</label>
-                    <input type="text" id="securityAnswer">
-                    <span id="securityAnswer_error" class="errorspan">*</span>
-                    <br>
-		<input type="submit" name="submit" value="sign up">
-		<br>
-	</form>
-    </body>
+<head>
+    <title>MiniTwitter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+    <script src="main.js"></script>
+</head>
+<body>
+<form id="signup" action="registration" method="get" onsubmit="return validateForm();">
+    <div class="header"><h1>Create Your Account</h1></div>
+    <div class="spacer"></div>
+
+    <div id="errorMessage" class="notVisible"></div>
+
+    <div class="field_container">
+        <label class="pad_top">Fullname:</label>
+        <input type="text" id="fullname" placeholder="Enter Your Full Name">
+        <span id="fullname_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Username:</label>
+        <input type="text" id="username" placeholder="Enter a User Name">
+        <span id="username_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Email:</label>
+        <input type="email" id="email" placeholder="Enter Your Email Address">
+        <span id="email_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Password:</label>
+        <input type="password" id="password" placeholder="Enter a Password">
+        <span id="password_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Confirm Password:</label>
+        <input type="password" id="confirmpassword" placeholder="Re-Enter Your Password">
+        <span id="confirmpassword_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Date of Birth:</label>
+        <input type="date" id="dateofbirth">
+        <span id="dateofbirth_error" class="errorspan">*</span>
+    </div>
+
+    <div class="field_container">
+        <label class="pad_top">Security Question:</label>
+        <select>
+            <option value="pet">What was the name of you first pet?</option>
+            <option value="car">What was the make of your first car?</option>
+            <option value="school">What was the name of the first school you went to?</option>
+        </select>
+
+        <label class="pad_top">Answer:</label>
+        <input type="text" id="securityAnswer">
+        <span id="securityAnswer_error" class="errorspan">*</span>
+    </div>
+
+    <input type="submit" class="submit" name="submit" value="Sign Up">
+
+</form>
+</body>
 </html>
