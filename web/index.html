@@ -57,12 +57,14 @@ and open the template in the editor.
 
     <div class="field_container">
         <label class="pad_top">Security Question:</label>
-        <select>
+        <select required onChange="toggleAnswer(this)">
+            <option value="">None</option>
             <option value="pet">What was the name of you first pet?</option>
             <option value="car">What was the make of your first car?</option>
             <option value="school">What was the name of the first school you went to?</option>
         </select>
-
+    </div>
+    <div class="field_container" id="answer">
         <label class="pad_top">Answer:</label>
         <input type="text" id="securityAnswer">
         <span id="securityAnswer_error" class="errorspan">*</span>

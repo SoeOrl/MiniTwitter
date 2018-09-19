@@ -81,9 +81,16 @@ select {
 
 .errorspan
 {
-	Display: none;
+    background-color: lightgrey;
+    display: none;
+    color: red
 }
 
 .notVisible{
-    Display: none;
+    display: none;
+    color: red;
+}
+
+#answer {
+    display: none;
 }
