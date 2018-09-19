@@ -105,8 +105,7 @@ function validateInvalidChar()
             {
                 
                 formElements[i].style.backgroundColor = "yellow";
-                formError.style.diplay = "inline-block";
-                console.log(formError.style);
+                formError.style.display = "inline";
                 if (bools)
                 {
                 errorDiv.innerHTML += "Error! Invalid Characters<br>";
@@ -152,7 +151,6 @@ function validatePasswordSecurity()
 
 function toggleAnswer(selectedQuestion)
 {
-    console.log(selectedQuestion);
     var answerBox = document.getElementById("answer");
  if (selectedQuestion.value !== "")
  {
