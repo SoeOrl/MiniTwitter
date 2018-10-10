@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Haadi/Dropbox/Teaching/Web%20Development%20(Fall%202018)/Assignments/Assignment%203/MyTwitter/MyTwitter/src/java/dataaccess/UserDB.java</file>
-            <file>file:/C:/Users/Haadi/Dropbox/Teaching/Web%20Development%20(Fall%202018)/Assignments/Assignment%203/MyTwitter/MyTwitter/web/signup.jsp</file>
-            <file>file:/C:/Users/Haadi/Dropbox/Teaching/Web%20Development%20(Fall%202018)/Assignments/Assignment%203/MyTwitter/MyTwitter/src/java/controller/membershipServlet.java</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/src/java/business/User.java</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/web/login.jsp</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/src/java/controller/membershipServlet.java</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/web/signup.jsp</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/web/styles/main.css</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/web/forgotpassword.jsp</file>
+            <file>file:/C:/Users/Soeren/OneDrive/Documents/Fall18/WebApps/MyTwitter/MyTwitter/web/home.jsp</file>
         </group>
     </open-files>
 </project-private>
