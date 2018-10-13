@@ -12,8 +12,8 @@ USE `twitterdb` ;
 CREATE TABLE `user` (
   `userID` int(11) NOT NULL AUTO_INCREMENT,
   `fullname` varchar(45) NOT NULL,
-  `username` varchar(45) NOT NULL,
-  `emailAddress` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL UNIQUE,
+  `emailAddress` varchar(45) NOT NULL UNIQUE,
   `birthdate` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `questionNo` int(11) NOT NULL,

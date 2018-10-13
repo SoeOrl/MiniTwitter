@@ -33,37 +33,37 @@ and open the template in the editor.
 
         <div class="field_container">
             <label class="pad_top">Username:</label>
-            <input type="text" id="username" placeholder="Enter a User Name">
+            <input type="text" id="username" name="username" placeholder="Enter a User Name">
             <span id="username_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
             <label class="pad_top">Email:</label>
-            <input type="email" id="email" placeholder="Enter Your Email Address">
+            <input type="email" id="email" name="email" placeholder="Enter Your Email Address">
             <span id="email_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
             <label class="pad_top">Password:</label>
-            <input type="password" id="password" placeholder="Enter a Password">
+            <input type="password" id="password" name="password" placeholder="Enter a Password">
             <span id="password_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
             <label class="pad_top">Confirm Password:</label>
-            <input type="password" id="confirmpassword" placeholder="Re-Enter Your Password">
+            <input type="password" id="confirmpassword" name="confirmPassword" placeholder="Re-Enter Your Password">
             <span id="confirmpassword_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
             <label class="pad_top">Date of Birth:</label>
-            <input type="date" id="dateofbirth">
+            <input type="date" id="dateofbirth" name="birthdate">
             <span id="dateofbirth_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
             <label class="pad_top">Security Question:</label>
-            <select required onChange="toggleAnswer(this)">
+            <select required onChange="toggleAnswer(this)" name="questionNo">
                 <option value="">None</option>
                 <option value="pet">What was the name of you first pet?</option>
                 <option value="car">What was the make of your first car?</option>
@@ -72,7 +72,7 @@ and open the template in the editor.
         </div>
         <div class="field_container" id="answer">
             <label class="pad_top">Answer:</label>
-            <input type="text" id="securityAnswer">
+            <input type="text" id="securityAnswer" name="answer">
             <span id="securityAnswer_error" class="errorspan">*</span>
         </div>
         <input type="hidden" name="action" value="signup">
