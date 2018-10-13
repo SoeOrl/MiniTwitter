@@ -7,6 +7,9 @@ package business;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.text.ParseException;
 
 /**
  *
@@ -14,7 +17,7 @@ import java.util.Date;
  */
 public class User implements Serializable {
     //define attributes fullname, ...
-    
+
     //define set/get methods for all attributes.
     private String fullName;
     private String email;
@@ -23,87 +26,110 @@ public class User implements Serializable {
     private Date birthdate;
     private int questionNo;
     private String answer;
-    
-    public User()
-    {
+
+    public User() {
         fullName = "";
         email = "";
+        username = "";
+        password = "";
+        birthdate = new Date();
+        questionNo = -1;
+        answer = "";
     }
-    public User(String fromString)
-    {
+    
+    public User(String fullName, String email, String username, String password,
+            Date birthdate, int questionNo, String answer) {
+        this.fullName = fullName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.questionNo = questionNo;
+        this.answer = answer;
+    }
+
+    public User(String fromString) throws NumberFormatException, ParseException {
         String[] data = fromString.replace("[", "").split(",");
         this.setFullName(data[0]);
         this.setEmail(data[1]);
+        this.setUsername(data[2]);
+        this.setPassword(data[3]);
+        this.setBirthdate(data[4]);
+        this.setQuestionNo(data[5]);
     }
-    public String getFullName()
-    {
+
+    public String getFullName() {
         return this.fullName;
     }
-    public void setFullName(String fullName)
-    {
+
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-    public String getEmail()
-    {
+
+    public String getEmail() {
         return this.email;
     }
-    public void setEmail(String email)
-    {
+
+    public void setEmail(String email) {
         this.email = email;
     }
-    
-        public String getUsername()
-    {
+
+    public String getUsername() {
         return this.username;
     }
-    public void setUsername(String username)
-    {
+
+    public void setUsername(String username) {
         this.username = username;
     }
-    
-        public String getPassword()
-    {
+
+    public String getPassword() {
         return this.password;
     }
-    public void setPassword(String password)
-    {
+
+    public void setPassword(String password) {
         this.password = password;
     }
-    
-        public Date getBirthdate()
-    {
+
+    public Date getBirthdate() {
         return this.birthdate;
     }
-    public void setBirthdate(Date birthdate)
-    {
+
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
     
-        public int getquestionNo()
-    {
+    public void setBirthdate(String birthdate) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("M-d-yyyy");
+        this.birthdate = format.parse(birthdate);
+    }
+
+    public int getQuestionNo() {
         return this.questionNo;
     }
-    public void setquestionNo(int questionNo)
-    {
+
+    public void setQuestionNo(int questionNo) {
         this.questionNo = questionNo;
     }
     
-        public String getAnswer()
-    {
+    public void setQuestionNo(String questionNo) {
+        this.questionNo = Integer.parseInt(questionNo);
+    }
+ 
+    public String getAnswer() {
         return this.answer;
     }
-    public void setAnswer(String answer)
-    {
+
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
-    
+
     @Override
-    public String toString()
-    {
-      StringBuilder sb = new StringBuilder();
-      sb.append(String.format("[%s,%s,%s,%s,%s,%s]", this.getFullName(), this.getEmail(), this.getUsername(),this.getBirthdate(),this.getquestionNo(), this.getPassword(),this.getAnswer()));
-      return sb.toString();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("[%s,%s,%s,%s,%s,%s,%s]", 
+                this.getFullName(), this.getEmail(), this.getUsername(), 
+                this.getPassword(), this.getBirthdate(), this.getQuestionNo(), 
+                this.getAnswer()));
+        return sb.toString();
     }
-    
-    
 }
