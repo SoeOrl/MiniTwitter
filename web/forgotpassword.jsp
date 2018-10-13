@@ -13,6 +13,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>O Dear, you seem to have forgotten your password</h1>
+        <h1>Oh Dear, you seem to have forgotten your password</h1>
     </body>
 </html>

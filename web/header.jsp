@@ -8,10 +8,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <c:choose>
+        <c:when test="${(user == null) and (cookie.user == null)}">
+             NOTHING BECAUSE NOTHING SHOULD BE HERE
+        </c:when>
+        <c:otherwise>
+             MAKE SIGNOUT BUTTON
+        </c:otherwise>
+             </c:choose>
+
     </body>
 </html>
