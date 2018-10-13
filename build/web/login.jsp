@@ -15,7 +15,7 @@
     <body id="loginBody">
         <div class="loginBox">
             <h1>Login</h1>
-            <form>
+            <form method="post" action="membership">
                 <input type="hidden" name="action" value="login">
                 <p>Username or Email</p>
                 <input type="text" name="userIdent" placeholder="Enter Username or Email"></br>
