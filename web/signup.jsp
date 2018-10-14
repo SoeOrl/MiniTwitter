@@ -11,14 +11,14 @@ and open the template in the editor.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css" type="text/css"/>
-    <script src="main.js"></script>
+    <script src="includes/main.js"></script>
 </head>
 
 <body>
     <header>
         <c:import url="/header.jsp"/>
     </header>
-    
+
     <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
         <div class="header"><h1>Create Your Account</h1></div>
         <div class="spacer"></div>

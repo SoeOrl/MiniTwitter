@@ -90,7 +90,7 @@ public class membershipServlet extends HttpServlet {
                     message = "Birthdate could not parsed correctly";
                     forwardUrl = "/signup.jsp";
                 }
-            } else if (action == "login") {
+            } else if (action.equals("login")) {
 
                 String identity = request.getParameter("identity");
                 String password = request.getParameter("password");
