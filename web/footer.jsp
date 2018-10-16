@@ -14,8 +14,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-             <p>Formatted Date (6): <fmt:formatDate type = "both" 
+        
+ <jsp:useBean id="now" class="java.util.Date" />
+             <p><fmt:formatDate type = "both" 
          dateStyle = "long" timeStyle = "long" value = "${now}" /></p>
-             FIGURE OUT HOW THIS DATE THING WORKS
     </body>
 </html>

@@ -2,4 +2,9 @@
 build.xml
 build/*
 nbproject/private
+nbproject/*
 dist/*
+nbproject/project.xml
+nbproject/project.properties
+nbproject/genfiles.properties
+nbproject/build-impl.xml

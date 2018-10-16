@@ -9,10 +9,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+            <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    
     <body id="loginBody">
+    <header>
+        <c:import url="/header.jsp"/>
+    </header>
         <div class="loginBox">
             <h1>Login</h1>
             <form method="post" action="membership">
@@ -27,12 +32,8 @@
                 <a href="signup.jsp">Sign Up</a></br>
             </form>
         </div>
-
-<!--        <h1>
-            <script type="text/javascript">
-                response.redirect("/membership");
-                </script>
-            
-        </h1>-->
+    <footer>   
+        <c:import url="/footer.jsp"/>
+    </footer>
     </body>
 </html>

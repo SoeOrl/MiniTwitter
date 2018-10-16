@@ -15,10 +15,10 @@
     <body>
         <c:choose>
         <c:when test="${(user == null) and (cookie.user == null)}">
-             NOTHING BECAUSE NOTHING SHOULD BE HERE
+         
         </c:when>
         <c:otherwise>
-             MAKE SIGNOUT BUTTON
+            <a href="login.jsp" id="signOut">Sign out</a></br>
         </c:otherwise>
              </c:choose>
 
