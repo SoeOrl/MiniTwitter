@@ -27,7 +27,7 @@
                 <p>Password</p>
                 <input type="password" name="userPass" placeholder="Enter Password">
                 <input type="submit" name="" value="Login">
-                <input type="checkbox" name="remeberMe" value="remeberMe">Remember me</br>
+                <input type="checkbox" name="rememberMe" value="rememberMe">Remember me</br>
                 <a href="forgotpassword.jsp">Forgot Password?</a></br>
                 <a href="signup.jsp">Sign Up</a></br>
             </form>
