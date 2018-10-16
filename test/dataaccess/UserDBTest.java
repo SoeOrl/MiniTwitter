@@ -12,10 +12,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static dataaccess.UserDB.insert;
@@ -26,21 +28,39 @@ import static dataaccess.UserDB.insert;
  */
 public class UserDBTest {
 
-    User user;
+    static User user;
     static Connection connection;
-    
+    static PreparedStatement ps;
+        
+
     @BeforeClass
-    public static void setUpClass() throws ClassNotFoundException, SQLException {
+    public static void setUpClass() throws ClassNotFoundException, SQLException, ParseException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+        String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
         String username = "root";
         String password = "root";
         connection = DriverManager.getConnection(dbURL, username, password);
+
+        user = new User("[Test Tester,test@tester.test,testuser,testpass,1991-01-30,1,Rascal]");
+
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws SQLException {
         connection.close();
+    }
+    
+    @Before
+    public void setUpTest() throws SQLException {
+        ps = connection.prepareStatement("SELECT * from user WHERE username = 'testuser'");
+        assertFalse(ps.executeQuery().next());
+    }
+    
+    @After
+    public void tearDownTest() throws SQLException {
+        // clear table and verify empty before test
+        ps = connection.prepareStatement("DELETE FROM user WHERE username = 'testuser'");
+        ps.executeUpdate();
     }
 
     /**
@@ -49,28 +69,19 @@ public class UserDBTest {
     @Test
     public void testInsert() throws SQLException, IOException, ClassNotFoundException {
 
-        PreparedStatement ps;
-        
-        // clear table and verify empty before test
-        ps = connection.prepareStatement("TRUNCATE TABLE user_test");
-        ps.executeQuery();
-        
-        ps = connection.prepareStatement("SELECT * from user_test");
-        assertNull(ps.executeQuery());
-        
         // insert user and verify user in database
         insert(user);
-
-        ps = connection.prepareStatement("SELECT * from user_test");
-        ResultSet result = ps.executeQuery();
         
+        ps = connection.prepareStatement("SELECT * from user");
+        ResultSet result = ps.executeQuery();
+
         result.next();
         User resultUser = new User(result.getString("fullName"), result.getString("email"),
-                        result.getString("username"), result.getString("password"),
-                        result.getDate("birthdate"), result.getInt("questionNo"),
-                        result.getString("answer"));
+                result.getString("username"), result.getString("password"),
+                result.getDate("birthdate"), result.getInt("questionNo"),
+                result.getString("answer"));
 
-        assertEquals(user, resultUser);
+        assertTrue(user.equals(resultUser));
         assertFalse(result.next());
     }
 
@@ -79,13 +90,12 @@ public class UserDBTest {
      */
     @Test
     public void testSearchByEmail() throws Exception {
-        System.out.println("searchByEmail");
-        String email = "";
-        User expResult = null;
+        String email = "test@tester.test";
+        User expResult = user;
+        
+        insert(user);
         User result = UserDB.searchByEmail(email);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(expResult.equals(result));
     }
 
     /**
@@ -93,13 +103,11 @@ public class UserDBTest {
      */
     @Test
     public void testSearchByUsername() throws Exception {
-        System.out.println("searchByUsername");
-        String username = "";
-        User expResult = null;
+        String username = "testuser";
+        User expResult = user;
+        
+        insert(user);
         User result = UserDB.searchByUsername(username);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(expResult.equals(result));
     }
-    
 }

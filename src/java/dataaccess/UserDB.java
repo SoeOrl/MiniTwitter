@@ -3,6 +3,7 @@ package dataaccess;
 import business.User;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -16,23 +17,23 @@ public class UserDB {
     public static long insert(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
             String preparedSQL
                     = "Insert into user(fullName, email, username, password, "
-                    + "dob, secQuestionId, secAnswer) "
+                    + "birthdate, questionNo, answer) "
                     + "Values (?, ?, ?, ?, ?, ?, ?)";
 
             //add values to the above SQL statement and execute it.
             PreparedStatement ps = connection.prepareStatement(preparedSQL);
             ps.setString(1, user.getFullName());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getBirthdate().toString());
-            ps.setString(5, user.getPassword());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPassword());
+            ps.setDate(5, new Date(user.getBirthdate().getTime()));
             ps.setString(6, String.valueOf(user.getQuestionNo()));
             ps.setString(7, user.getAnswer());
 
@@ -56,19 +57,19 @@ public class UserDB {
     private static User search(String fieldName, String fieldValue) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
-            String query = "SELECT *"
-                    + "FROM user"
-                    + "WHERE ? = ?";
+            String query = String.format("SELECT * "
+                    + "FROM user "
+                    + "WHERE %s = ?", fieldName);
+
             PreparedStatement ps = connection.prepareStatement(query);
 
             //add value to the above SQL statement and execute it.
-            ps.setString(1, fieldName);
-            ps.setString(2, fieldValue);
+            ps.setString(1, fieldValue);
 
             ResultSet result = ps.executeQuery();
 

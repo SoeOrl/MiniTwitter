@@ -56,6 +56,7 @@ public class User implements Serializable {
         this.setPassword(data[3]);
         this.setBirthdate(data[4]);
         this.setQuestionNo(data[5]);
+        this.setAnswer(data[6]);
     }
 
     public String getFullName() {
@@ -131,5 +132,12 @@ public class User implements Serializable {
                 this.getPassword(), this.getBirthdate(), this.getQuestionNo(), 
                 this.getAnswer()));
         return sb.toString();
+    }
+    
+    public boolean equals(User user) {
+        return fullName.equals(user.getFullName()) && email.equals(user.getEmail()) &&
+                username.equals(user.getUsername()) && password.equals(user.getPassword()) &&
+                birthdate.equals(user.getBirthdate()) && questionNo == user.questionNo &&
+                answer.equals(user.getAnswer());
     }
 }
