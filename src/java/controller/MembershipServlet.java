@@ -28,7 +28,7 @@ public class MembershipServlet extends HttpServlet {
     public void init() throws ServletException {
         getServletContext().setAttribute("securityQuestions", SecurityQuestion.values());
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -44,8 +44,8 @@ public class MembershipServlet extends HttpServlet {
 
         String forwardUrl = "/login.jsp";
         getServletContext()
-                    .getRequestDispatcher(forwardUrl)
-                    .forward(request, response);
+                .getRequestDispatcher(forwardUrl)
+                .forward(request, response);
     }
 
     /**
@@ -86,6 +86,8 @@ public class MembershipServlet extends HttpServlet {
                         // insert to db
                         if (insert(user) != 0) {
                             forwardUrl = "/home.jsp";
+                            session.setAttribute("user", user);
+
                         } else {
                             message = "Server Error - Could not complete request";
                             forwardUrl = "/signup.jsp";
@@ -105,26 +107,26 @@ public class MembershipServlet extends HttpServlet {
                 String password = request.getParameter("password");
 
                 user = searchByUsername(identity);
-                
-                if(user == null) {
+
+                if (user == null) {
                     user = searchByEmail(identity);
                 }
-                
-                if(user == null || !user.getPassword().equals(password)) {
+
+                if (user == null || !user.getPassword().equals(password)) {
                     message = "Username/email or password are incorrect";
                     forwardUrl = "/login.jsp";
                 } else {
                     forwardUrl = "/home.jsp";
+                    session.setAttribute("user", user);
                 }
 
             }
         } catch (IOException | ClassNotFoundException e) {
             message = "Server Error";
             forwardUrl = "/signup.jsp";
-            
+
         } finally {
             session.setAttribute("message", message);
-            session.setAttribute("user", user);
 
             getServletContext()
                     .getRequestDispatcher(forwardUrl)

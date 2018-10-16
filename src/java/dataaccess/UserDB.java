@@ -17,7 +17,7 @@ public class UserDB {
     public static long insert(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
@@ -57,7 +57,7 @@ public class UserDB {
     private static User search(String fieldName, String fieldValue) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
