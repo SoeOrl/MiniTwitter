@@ -7,6 +7,7 @@ package controller;
 
 import business.User;
 import business.UserValidator;
+import business.SecurityQuestion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletContext;
@@ -21,8 +22,12 @@ import static dataaccess.UserDB.insert;
 import static dataaccess.UserDB.searchByEmail;
 import static dataaccess.UserDB.searchByUsername;
 
-@WebServlet(name = "membershipServlet", urlPatterns = {"/membership"})
-public class membershipServlet extends HttpServlet {
+public class MembershipServlet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        getServletContext().setAttribute("securityQuestions", SecurityQuestion.values());
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,6 +42,10 @@ public class membershipServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String forwardUrl = "/login.jsp";
+        getServletContext()
+                .getRequestDispatcher(forwardUrl)
+                .forward(request, response);
     }
 
     /**
@@ -77,6 +86,8 @@ public class membershipServlet extends HttpServlet {
                         // insert to db
                         if (insert(user) != 0) {
                             forwardUrl = "/home.jsp";
+                            session.setAttribute("user", user);
+
                         } else {
                             message = "Server Error - Could not complete request";
                             forwardUrl = "/signup.jsp";
@@ -90,32 +101,36 @@ public class membershipServlet extends HttpServlet {
                     message = "Birthdate could not parsed correctly";
                     forwardUrl = "/signup.jsp";
                 }
-            } else if (action == "login") {
+            } else if (action.equals("login")) {
 
                 String identity = request.getParameter("identity");
                 String password = request.getParameter("password");
 
                 user = searchByUsername(identity);
-                
-                if(user == null) {
+
+                if (user == null) {
                     user = searchByEmail(identity);
                 }
-                
-                if(user == null || !user.getPassword().equals(password)) {
+
+                if (user == null || !user.getPassword().equals(password)) {
                     message = "Username/email or password are incorrect";
                     forwardUrl = "/login.jsp";
                 } else {
                     forwardUrl = "/home.jsp";
+                    session.setAttribute("user", user);
                 }
 
+            } else if (action.equals("logout")) {
+                user = null;
+                forwardUrl = "/login.jsp";
+                session.setAttribute("user", user);
             }
         } catch (IOException | ClassNotFoundException e) {
             message = "Server Error";
             forwardUrl = "/signup.jsp";
-            
+
         } finally {
             session.setAttribute("message", message);
-            session.setAttribute("user", user);
 
             getServletContext()
                     .getRequestDispatcher(forwardUrl)

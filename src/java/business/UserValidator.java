@@ -44,7 +44,7 @@ public class UserValidator {
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
-        } finally {
+            errorMessage = "Server error - could not validate email";
             return false;
         }
     }
@@ -62,7 +62,7 @@ public class UserValidator {
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
-        } finally {
+            errorMessage = "Server error - Could not validate username";
             return false;
         }
     }
@@ -101,7 +101,7 @@ public class UserValidator {
     }
 
     private boolean empty(String value) {
-        return value != null && !value.isEmpty();
+        return value == null || value.isEmpty();
     }
 
     private boolean noInvalidChars() {

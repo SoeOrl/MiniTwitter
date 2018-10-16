@@ -11,24 +11,27 @@ and open the template in the editor.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css" type="text/css"/>
-    <script src="main.js"></script>
+    <script src="includes/main.js"></script>
 </head>
 
 <body>
     <header>
         <c:import url="/header.jsp"/>
     </header>
-    
+
     <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
         <div class="header"><h1>Create Your Account</h1></div>
         <div class="spacer"></div>
 
         <div id="errorMessage" class="notVisible"></div>
-
+        <c:if test="${message != null}">
+            <div id="serverErrorMessage">${message}</div>
+        </c:if>
+            
         <div class="field_container">
             <label class="pad_top">Full Name:</label>
             <input type="text" id="fullName" name="fullName" placeholder="Enter Your Full Name">
-            <span id="fullname_error" class="errorspan">*</span>
+            <span id="fullName_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
@@ -60,14 +63,13 @@ and open the template in the editor.
             <input type="date" id="dateofbirth" name="birthdate">
             <span id="dateofbirth_error" class="errorspan">*</span>
         </div>
-
+        
         <div class="field_container">
             <label class="pad_top">Security Question:</label>
-            <select required onChange="toggleAnswer(this)" name="questionNo">
-                <option value="">None</option>
-                <option value="pet">What was the name of you first pet?</option>
-                <option value="car">What was the make of your first car?</option>
-                <option value="school">What was the name of the first school you went to?</option>
+            <select required onChange="toggleAnswer()" name="questionNo" id="questionNo">
+                <c:forEach items="${securityQuestions}" var="securityQuestion">
+                    <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
+                </c:forEach>
             </select>
         </div>
         <div class="field_container" id="answer">

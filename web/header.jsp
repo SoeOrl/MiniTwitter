@@ -14,13 +14,16 @@
     </head>
     <body>
         <c:choose>
-        <c:when test="${(user == null) and (cookie.user == null)}">
-             NOTHING BECAUSE NOTHING SHOULD BE HERE
-        </c:when>
-        <c:otherwise>
-             MAKE SIGNOUT BUTTON
-        </c:otherwise>
-             </c:choose>
+            <c:when test="${(user == null) and (cookie.user == null)}">
+
+            </c:when>
+            <c:otherwise>
+                <form action="membership" method="post">
+                    <input type="hidden" name="action" value="logout">
+                    <input type="submit" id="signOut" value="Sign out"  />
+                </form>
+            </c:otherwise>
+        </c:choose>
 
     </body>
 </html>

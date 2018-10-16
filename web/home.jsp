@@ -19,8 +19,7 @@
         <c:if test="${(user == null) and (cookie.user == null)}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
-            Welcome to your homepage ${cookie.user}
-            ${user}
+            Welcome to your homepage ${user.fullName}
     <footer>   
         <c:import url="/footer.jsp"/>
     </footer>
