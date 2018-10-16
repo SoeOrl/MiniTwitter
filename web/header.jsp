@@ -14,13 +14,16 @@
     </head>
     <body>
         <c:choose>
-        <c:when test="${(user == null) and (cookie.user == null)}">
-         
-        </c:when>
-        <c:otherwise>
-            <a href="login.jsp" id="signOut">Sign out</a></br>
-        </c:otherwise>
-             </c:choose>
+            <c:when test="${(user == null) and (cookie.user == null)}">
+
+            </c:when>
+            <c:otherwise>
+                <form action="membership" method="post">
+                    <input type="hidden" name="action" value="logout">
+                    <input type="submit" id="signOut" value="Sign out"  />
+                </form>
+            </c:otherwise>
+        </c:choose>
 
     </body>
 </html>

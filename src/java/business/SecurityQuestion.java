@@ -10,6 +10,7 @@ package business;
  * @author jdodso227
  */
 public enum SecurityQuestion {
+    NONE(0, "None"),
     PET(1, "What was the name of you first pet?"),
     CAR(2, "What was the make of your first car?"),
     SCHOOL(3, "What was the name of the first school you went to?");

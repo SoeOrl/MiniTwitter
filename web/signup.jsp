@@ -20,7 +20,6 @@ and open the template in the editor.
     </header>
 
     <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
-        <input type="hidden" value="signup">
         <div class="header"><h1>Create Your Account</h1></div>
         <div class="spacer"></div>
 
@@ -28,11 +27,11 @@ and open the template in the editor.
         <c:if test="${message != null}">
             <div id="serverErrorMessage">${message}</div>
         </c:if>
-
+            
         <div class="field_container">
             <label class="pad_top">Full Name:</label>
             <input type="text" id="fullName" name="fullName" placeholder="Enter Your Full Name">
-            <span id="fullname_error" class="errorspan">*</span>
+            <span id="fullName_error" class="errorspan">*</span>
         </div>
 
         <div class="field_container">
@@ -67,7 +66,7 @@ and open the template in the editor.
         
         <div class="field_container">
             <label class="pad_top">Security Question:</label>
-            <select required onChange="toggleAnswer(this)" name="questionNo">
+            <select required onChange="toggleAnswer()" name="questionNo" id="questionNo">
                 <c:forEach items="${securityQuestions}" var="securityQuestion">
                     <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
                 </c:forEach>
