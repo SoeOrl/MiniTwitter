@@ -120,6 +120,10 @@ public class MembershipServlet extends HttpServlet {
                     session.setAttribute("user", user);
                 }
 
+            } else if (action.equals("logout")) {
+                user = null;
+                forwardUrl = "/login.jsp";
+                session.setAttribute("user", user);
             }
         } catch (IOException | ClassNotFoundException e) {
             message = "Server Error";

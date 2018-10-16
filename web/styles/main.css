@@ -144,4 +144,10 @@ select {
 
 #signOut {
     float: right;
+    width: 100px;
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 5px;
+    border: none;
+    padding: 0px;
 }

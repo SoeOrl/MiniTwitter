@@ -29,6 +29,11 @@ function validateForm()
     {
         return false;
     }
+        bools.push(checkAnswer());
+    if (bools.includes(false))
+    {
+        return false;
+    }
     
     errorDiv.innerHTML = "";
     errorDiv.style.display = "none";
@@ -68,10 +73,10 @@ function validatePassword()
 function validateName()
 {       
         var errorDiv = document.getElementById("errorMessage");
-	var name = document.getElementById("fullname");
-	var nameError = document.getElementById("fullname_error");
+        var name = document.getElementById("fullName");
+	var nameError = document.getElementById("fullName_error");
 	var regex = /[A-Za-z]+\s[A-Za-z]+.*/;
-        if(!regex.test(name.value))
+        if(!regex.test(name.value) && name.value != null)
 	{
 		name.style.backgroundColor = "yellow";
 		nameError.style.display = "inline";
@@ -149,15 +154,33 @@ function validatePasswordSecurity()
 	
 }
 
-function toggleAnswer(selectedQuestion)
+function checkAnswer()
 {
- var answerBox = document.getElementById("answer");
- if (selectedQuestion.value !== "None")
+    var answerBox = document.getElementById("questionNo");
+    var securityAnswer = document.getElementById("answer");
+    var errorDiv = document.getElementById("errorMessage");
+     if (answerBox.value == "0")
  {
-     answerBox.style.display = "block";
+
+     errorDiv.innerHTML += "Error! No question selected<br>";
+                errorDiv.style.display="inline";
+		return false;
  }
  else
  {
-    answerBox.style.display = "none"; 
+     return true;
+ }
+}
+function toggleAnswer()
+{
+ var answerBox = document.getElementById("questionNo");
+ var securityAnswer = document.getElementById("answer");
+ if (answerBox.value != "0")
+ {
+     securityAnswer.style.display = "block";
+ }
+ else
+ {
+    securityAnswer.style.display = "none"; 
  }
 }
