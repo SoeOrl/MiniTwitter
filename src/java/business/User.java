@@ -99,7 +99,7 @@ public class User implements Serializable {
     }
     
     public void setBirthdate(String birthdate) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("M-d-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
         this.birthdate = format.parse(birthdate);
     }
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDB {
+
     public static long insert(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -20,9 +21,9 @@ public class UserDB {
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
-            String preparedSQL = 
-                    "Insert into User(fullName, username, email, dob, "
-                    + "password, secQuestionId, secAnswer) "
+            String preparedSQL
+                    = "Insert into user(fullName, email, username, password, "
+                    + "dob, secQuestionId, secAnswer) "
                     + "Values (?, ?, ?, ?, ?, ?, ?)";
 
             //add values to the above SQL statement and execute it.
@@ -34,7 +35,7 @@ public class UserDB {
             ps.setString(5, user.getPassword());
             ps.setString(6, String.valueOf(user.getQuestionNo()));
             ps.setString(7, user.getAnswer());
-            
+
             return ps.executeUpdate();
         } catch (SQLException e) {
             for (Throwable t : e) {
@@ -43,15 +44,15 @@ public class UserDB {
         }
         return 0;
     }
-    
+
     public static User searchByEmail(String email) throws IOException, ClassNotFoundException {
         return search("email", email);
     }
-    
+
     public static User searchByUsername(String username) throws IOException, ClassNotFoundException {
         return search("username", username);
     }
-    
+
     private static User search(String fieldName, String fieldValue) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -64,17 +65,17 @@ public class UserDB {
                     + "FROM user"
                     + "WHERE ? = ?";
             PreparedStatement ps = connection.prepareStatement(query);
-            
+
             //add value to the above SQL statement and execute it.
             ps.setString(1, fieldName);
             ps.setString(2, fieldValue);
-            
+
             ResultSet result = ps.executeQuery();
-            
-            if(result.next()) {
-                return new User(result.getString("fullName"), result.getString("email"), 
-                        result.getString("username"), result.getString("password"), 
-                        result.getDate("birthdate"), result.getInt("questionNo"), 
+
+            if (result.next()) {
+                return new User(result.getString("fullName"), result.getString("email"),
+                        result.getString("username"), result.getString("password"),
+                        result.getDate("birthdate"), result.getInt("questionNo"),
                         result.getString("answer"));
             } else {
                 return null;
@@ -84,7 +85,7 @@ public class UserDB {
                 t.printStackTrace();
             }
         }
-        
+
         return null;
     }
 }

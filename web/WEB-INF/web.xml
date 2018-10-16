@@ -4,11 +4,20 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                              http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
+    <servlet>
+        <servlet-name>MembershipServlet</servlet-name>
+        <servlet-class>controller.MembershipServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MembershipServlet</servlet-name>
+        <url-pattern>/membership</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>membership</welcome-file>
     </welcome-file-list>
 </web-app>

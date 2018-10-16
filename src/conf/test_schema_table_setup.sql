@@ -9,7 +9,7 @@ DROP SCHEMA IF EXISTS `twitterdb`;
 CREATE SCHEMA `twitterdb` DEFAULT CHARACTER SET utf8mb4 ;
 USE `twitterdb` ;
 
-CREATE TABLE `user_test` (
+CREATE TABLE `user` (
   `userID` int(11) NOT NULL AUTO_INCREMENT,
   `fullname` varchar(45) NOT NULL,
   `username` varchar(45) NOT NULL UNIQUE,

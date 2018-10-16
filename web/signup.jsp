@@ -20,6 +20,7 @@ and open the template in the editor.
     </header>
     
     <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
+        <input type="hidden" value="signup">
         <div class="header"><h1>Create Your Account</h1></div>
         <div class="spacer"></div>
 
@@ -60,14 +61,13 @@ and open the template in the editor.
             <input type="date" id="dateofbirth" name="birthdate">
             <span id="dateofbirth_error" class="errorspan">*</span>
         </div>
-
+        
         <div class="field_container">
             <label class="pad_top">Security Question:</label>
             <select required onChange="toggleAnswer(this)" name="questionNo">
-                <option value="">None</option>
-                <option value="pet">What was the name of you first pet?</option>
-                <option value="car">What was the make of your first car?</option>
-                <option value="school">What was the name of the first school you went to?</option>
+                <c:forEach items="${securityQuestions}" var="securityQuestion">
+                    <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
+                </c:forEach>
             </select>
         </div>
         <div class="field_container" id="answer">
