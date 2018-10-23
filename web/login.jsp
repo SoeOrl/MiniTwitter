@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+<link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
 <!DOCTYPE html>
 <html>
     <head>
