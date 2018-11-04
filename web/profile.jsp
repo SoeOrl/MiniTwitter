@@ -20,7 +20,7 @@ and open the template in the editor.
         </header>
 
         <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
-            <div class="header"><h1>Create Your Account</h1></div>
+            <div class="header"><h1>Edit your information</h1></div>
             <div class="spacer"></div>
 
             <div id="errorMessage" class="notVisible"></div>
@@ -30,43 +30,43 @@ and open the template in the editor.
 
             <div class="field_container">
                 <label class="pad_top">Full Name:</label>
-                <input type="text" id="fullName" name="fullName" placeholder="Enter Your Full Name">
+                <input type="text" id="fullName" name="fullName" value="${cookie.fullName}">
                 <span id="fullName_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter a User Name">
+                <input type="text" id="username" name="username" value="${cookie.username}" disabled>
                 <span id="username_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your Email">
+                <input type="email" id="email" name="email" value="${cookie.email}" disabled>
                 <span id="email_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter a Password">
+                <input type="password" id="password" name="password" value="${cookie.password}">
                 <span id="password_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Confirm Password:</label>
-                <input type="password" id="confirmpassword" name="confirmPassword" placeholder="Re-Enter Your Password">
+                <input type="password" id="confirmpassword" name="confirmPassword" value="${cookie.password}">
                 <span id="confirmpassword_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Date of Birth:</label>
-                <input type="date" id="dateofbirth" name="birthdate">
+                <input type="date" id="dateofbirth" name="birthdate" value="${cookie.dateofbirth}">
                 <span id="dateofbirth_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Security Question:</label>
-                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo">
+                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo" value="${cookie.questionNo}">
                     <c:forEach items="${securityQuestions}" var="securityQuestion">
                         <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
                     </c:forEach>
@@ -74,11 +74,11 @@ and open the template in the editor.
             </div>
             <div class="field_container" id="answer">
                 <label class="pad_top">Answer:</label>
-                <input type="text" id="securityAnswer" name="answer">
+                <input type="text" id="securityAnswer" value="${cookie.answer}">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
-            <input type="hidden" name="action" value="signup">
-            <input type="submit" class="submit" name="submit" value="Sign Up">
+            <input type="hidden" name="action" value="profile">
+            <input type="submit" class="submit" name="submit" value="Update">
         </form>
 
         <footer>   
