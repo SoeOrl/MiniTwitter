@@ -18,6 +18,9 @@
 
             </c:when>
             <c:otherwise>
+            <a href="/home.jsp" class="btn btn-primary">Home</a>
+            <a href="/notifications.jsp" class="btn btn-primary">Notifications</a>
+            <a href="/signup.jsp" class="btn btn-primary">Profile</a>
                 <form action="membership" method="post">
                     <input type="hidden" name="action" value="logout">
                     <input type="submit" id="signOut" value="Sign out"  />
