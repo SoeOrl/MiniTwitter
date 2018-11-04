@@ -8,8 +8,10 @@ package controller;
 import business.User;
 import business.UserValidator;
 import business.SecurityQuestion;
+import dataaccess.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.Emailer;
 
 import static dataaccess.UserDB.insert;
 import static dataaccess.UserDB.searchByEmail;
@@ -68,62 +71,92 @@ public class MembershipServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         try {
-            if (action.equals("signup")) {
-                user = new User();
+            switch (action) {
+                case "signup":
+                    user = new User();
+                    try {
+                        user.setFullName(request.getParameter("fullName"));
+                        user.setEmail(request.getParameter("email"));
+                        user.setUsername(request.getParameter("username"));
+                        user.setPassword(request.getParameter("password"));
+                        user.setBirthdate(request.getParameter("birthdate"));
+                        user.setQuestionNo(Integer.parseInt(request.getParameter("questionNo")));
+                        user.setAnswer(request.getParameter("answer"));
 
-                try {
-                    user.setFullName(request.getParameter("fullName"));
-                    user.setEmail(request.getParameter("email"));
-                    user.setUsername(request.getParameter("username"));
-                    user.setPassword(request.getParameter("password"));
-                    user.setBirthdate(request.getParameter("birthdate"));
-                    user.setQuestionNo(Integer.parseInt(request.getParameter("questionNo")));
-                    user.setAnswer(request.getParameter("answer"));
+                        UserValidator userValidator = new UserValidator(user, request.getParameter("confirmPassword"));
 
-                    UserValidator userValidator = new UserValidator(user, request.getParameter("confirmPassword"));
+                        if (userValidator.isValid()) {
+                            // insert to db
+                            if (insert(user) != 0) {
+                                forwardUrl = "/home.jsp";
+                                session.setAttribute("user", user);
 
-                    if (userValidator.isValid()) {
-                        // insert to db
-                        if (insert(user) != 0) {
-                            forwardUrl = "/home.jsp";
-                            session.setAttribute("user", user);
-
+                            } else {
+                                message = "Server Error - Could not complete request";
+                                forwardUrl = "/signup.jsp";
+                            }
                         } else {
-                            message = "Server Error - Could not complete request";
+                            // send error message back as parameter to signup.jsp
+                            message = userValidator.errorMessage;
                             forwardUrl = "/signup.jsp";
                         }
-                    } else {
-                        // send error message back as parameter to signup.jsp
-                        message = userValidator.errorMessage;
+                    } catch (java.text.ParseException e) {
+                        message = "Birthdate could not parsed correctly";
                         forwardUrl = "/signup.jsp";
                     }
-                } catch (java.text.ParseException e) {
-                    message = "Birthdate could not parsed correctly";
-                    forwardUrl = "/signup.jsp";
-                }
-            } else if (action.equals("login")) {
+                    break;
+                    
+                case "login":
+                    String identity = request.getParameter("identity");
+                    String password = request.getParameter("password");
 
-                String identity = request.getParameter("identity");
-                String password = request.getParameter("password");
+                    user = searchByUsername(identity);
 
-                user = searchByUsername(identity);
+                    if (user == null) {
+                        user = searchByEmail(identity);
+                    }
 
-                if (user == null) {
-                    user = searchByEmail(identity);
-                }
-
-                if (user == null || !user.getPassword().equals(password)) {
-                    message = "Username/email or password are incorrect";
+                    if (user == null || !user.getPassword().equals(password)) {
+                        message = "Username/email or password are incorrect";
+                        forwardUrl = "/login.jsp";
+                    } else {
+                        forwardUrl = "/home.jsp";
+                        session.setAttribute("user", user);
+                    }
+                    break;
+                    
+                case "logout":
+                    user = null;
                     forwardUrl = "/login.jsp";
-                } else {
-                    forwardUrl = "/home.jsp";
                     session.setAttribute("user", user);
-                }
+                    break;
+                    
+                case "forgotpw":
+                    String email = request.getParameter("email");
+                    int questionNo = Integer.parseInt(request.getParameter("questionNo"));
+                    String answer = request.getParameter("answer");
 
-            } else if (action.equals("logout")) {
-                user = null;
-                forwardUrl = "/login.jsp";
-                session.setAttribute("user", user);
+                    user = UserDB.searchByEmail(email);
+
+                    if (user == null) {
+                        message = "No user with that email exists";
+                    } else if (user.getQuestionNo() == questionNo && (user.getAnswer().equals(answer))) {
+
+                        try {
+                            Emailer.sendForgotPasswordEmail(user);
+
+                            message = String.format("Email with new password sent to %s", email);
+                        } catch (MessagingException e) {
+                            message = "Server Error - Could not send email";
+                            message += "Error: " + e.getMessage();
+                        }
+                    }
+
+                    forwardUrl = "/forgotpassword.jsp";
+                    break;
+                    
+                default:
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             message = "Server Error";
