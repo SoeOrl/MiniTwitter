@@ -20,8 +20,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import utils.RandomUser;
+
 import static org.junit.Assert.*;
 import static dataaccess.UserUtil.*;
+import java.time.LocalDate;
 
 /**
  *
@@ -32,36 +35,32 @@ public class UserUtilTest {
     static User user;
     static Connection connection;
     static PreparedStatement ps;
-        
 
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException, ParseException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver;useSSL=false";
+        String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
         String username = "root";
         String password = "root";
         connection = DriverManager.getConnection(dbURL, username, password);
-
-        user = new User("[Test Tester,test@tester.test,testuser,testpass,1991-01-30,1,Rascal]");
-
     }
 
     @AfterClass
     public static void tearDownClass() throws SQLException {
         connection.close();
     }
-    
+
     @Before
     public void setUpTest() throws SQLException {
-        ps = connection.prepareStatement("SELECT * from user WHERE username = 'testuser'");
+        user = RandomUser.generate();
+        ps = connection.prepareStatement("SELECT * from user WHERE username = ?");
+        ps.setString(1, user.getUsername());
         assertFalse(ps.executeQuery().next());
     }
-    
+
     @After
-    public void tearDownTest() throws SQLException {
-        // clear table and verify empty before test
-        ps = connection.prepareStatement("DELETE FROM user WHERE username = 'testuser'");
-        ps.executeUpdate();
+    public void tearDownTest() throws Exception {
+        deleteUser(user);
     }
 
     /**
@@ -72,14 +71,15 @@ public class UserUtilTest {
 
         // insert user and verify user in database
         insertUser(user);
-        
-        ps = connection.prepareStatement("SELECT * from user");
+
+        ps = connection.prepareStatement("SELECT * from user where username = ?");
+        ps.setString(1, user.getUsername());
         ResultSet result = ps.executeQuery();
 
         result.next();
         User resultUser = new User(result.getString("fullName"), result.getString("email"),
                 result.getString("username"), result.getString("password"),
-                result.getDate("birthdate"), result.getInt("questionNo"),
+                result.getDate("birthdate").toLocalDate(), result.getInt("questionNo"),
                 result.getString("answer"));
 
         assertTrue(user.equals(resultUser));
@@ -91,12 +91,9 @@ public class UserUtilTest {
      */
     @Test
     public void testSearchByEmail() throws Exception {
-        String email = "test@tester.test";
-        User expResult = user;
-        
         insertUser(user);
-        User result = UserUtil.searchByEmail(email);
-        assertTrue(expResult.equals(result));
+        User result = searchByEmail(user.getEmail());
+        assertTrue(user.equals(result));
     }
 
     /**
@@ -104,11 +101,38 @@ public class UserUtilTest {
      */
     @Test
     public void testSearchByUsername() throws Exception {
-        String username = "testuser";
-        User expResult = user;
-        
         insertUser(user);
-        User result = UserUtil.searchByUsername(username);
-        assertTrue(expResult.equals(result));
-    } 
+        User result = searchByUsername(user.getUsername());
+        assertTrue(user.equals(result));
+    }
+
+    /**
+     * Test of deleteUser method, of class UserUtil.
+     */
+    @Test
+    public void testDeleteUser() throws Exception {
+        insertUser(user);
+        User result = searchByUsername(user.getUsername());
+        assertTrue(user.equals(result));
+        
+        deleteUser(user);
+        result = searchByUsername(user.getUsername());
+        assertNull(result);
+    }
+
+    /**
+     * Test of updateUser method, of class UserUtil.
+     */
+    @Test
+    public void testUpdateUser() throws Exception {
+        insertUser(user);
+        
+        user.setFullName("Joe D");
+        user.setBirthdate(LocalDate.of(1991, 12, 30));
+        
+        int result = updateUser(user);
+        assertTrue(result == 1);
+        
+        assertTrue(user.equals(searchByUsername(user.getUsername())));
+    }
 }

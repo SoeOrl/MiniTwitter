@@ -6,8 +6,8 @@
 package business;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.text.ParseException;
 
 /**
@@ -22,7 +22,7 @@ public final class User implements Serializable {
     private String email;
     private String username;
     private String password;
-    private Date birthdate;
+    private LocalDate birthdate;
     private int questionNo;
     private String answer;
 
@@ -31,13 +31,13 @@ public final class User implements Serializable {
         email = "";
         username = "";
         password = "";
-        birthdate = new Date();
+        birthdate = null;
         questionNo = -1;
         answer = "";
     }
     
     public User(String fullName, String email, String username, String password,
-            Date birthdate, int questionNo, String answer) {
+            LocalDate birthdate, int questionNo, String answer) {
         this.fullName = fullName;
         this.email = email;
         this.username = username;
@@ -90,17 +90,17 @@ public final class User implements Serializable {
         this.password = password;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return this.birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
     
     public void setBirthdate(String birthdate) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d");
-        this.birthdate = format.parse(birthdate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        this.birthdate = LocalDate.parse(birthdate, formatter);
     }
 
     public int getQuestionNo() {
