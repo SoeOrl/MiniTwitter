@@ -45,7 +45,10 @@ and open the template in the editor.
                 <input type="email" id="email" name="email" placeholder="Enter your Email">
                 <span id="email_error" class="errorspan">*</span>
             </div>
-
+            <div class="field_container">
+                <label class="pad_top">Profile Picture:</label>
+                <input type="file" name="file" accept="image/png, image/jpeg"/>
+            </div>
             <div class="field_container">
                 <label class="pad_top">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter a Password">

@@ -19,7 +19,7 @@ and open the template in the editor.
             <c:import url="/header.jsp"/>
         </header>
 
-        <form id="signup" action="membership" method="post" onsubmit="return validateForm();">
+        <form id="signup" action="membership" method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
             <div class="header"><h1>Edit your information</h1></div>
             <div class="spacer"></div>
 
@@ -45,7 +45,10 @@ and open the template in the editor.
                 <input type="email" id="email" name="email" value="${cookie.email}" disabled>
                 <span id="email_error" class="errorspan">*</span>
             </div>
-
+            <div class="field_container">
+                <label class="pad_top">Profile Picture:</label>
+                <input type="file" name="file" accept="image/png, image/jpeg"/>
+            </div>
             <div class="field_container">
                 <label class="pad_top">Password:</label>
                 <input type="password" id="password" name="password" value="${cookie.password}">

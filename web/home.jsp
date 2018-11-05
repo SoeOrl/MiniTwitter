@@ -11,7 +11,8 @@
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>        <title>JSP Page</title>
+        <link rel="stylesheet" href="styles/main.css" type="text/css"/>       
+        <title>JSP Page</title>
     </head>
     <body>
     <header>
