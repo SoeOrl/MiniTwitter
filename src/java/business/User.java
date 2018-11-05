@@ -8,14 +8,13 @@ package business;
 import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 import java.text.ParseException;
 
 /**
  *
  * @javabean for User Entity
  */
-public class User implements Serializable {
+public final class User implements Serializable {
     //define attributes fullname, ...
 
     //define set/get methods for all attributes.
