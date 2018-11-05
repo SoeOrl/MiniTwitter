@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 public class UserUtil {
 
-    public static long insertUser(User user) throws IOException, ClassNotFoundException {
+    public static int insertUser(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
@@ -33,7 +33,7 @@ public class UserUtil {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getUsername());
             ps.setString(4, user.getPassword());
-            ps.setDate(5, new Date(user.getBirthdate().getTime()));
+            ps.setDate(5, Date.valueOf(user.getBirthdate()));
             ps.setString(6, String.valueOf(user.getQuestionNo()));
             ps.setString(7, user.getAnswer());
 
@@ -57,7 +57,7 @@ public class UserUtil {
     private static User search(String fieldName, String fieldValue) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
@@ -76,7 +76,7 @@ public class UserUtil {
             if (result.next()) {
                 return new User(result.getString("fullName"), result.getString("email"),
                         result.getString("username"), result.getString("password"),
-                        result.getDate("birthdate"), result.getInt("questionNo"),
+                        result.getDate("birthdate").toLocalDate(), result.getInt("questionNo"),
                         result.getString("answer"));
             } else {
                 return null;
@@ -88,5 +88,66 @@ public class UserUtil {
         }
 
         return null;
+    }
+    
+    public static int updateUser(User user) throws IOException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+            String username = "root";
+            String password = "root";
+            Connection connection = DriverManager.getConnection(dbURL, username, password);
+
+            String preparedSQL 
+                    = "UPDATE user "
+                    + "SET "
+                    + "  fullName = ?, "
+                    + "  password = ?, "
+                    + "  birthdate = ?, "
+                    + "  questionNo = ?, "
+                    + "  answer = ? "
+                    + "WHERE username = ?";
+            
+            //add values to the above SQL statement and execute it.
+            PreparedStatement ps = connection.prepareStatement(preparedSQL);
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getPassword());
+            ps.setDate(3, Date.valueOf(user.getBirthdate()));
+            ps.setInt(4, user.getQuestionNo());
+            ps.setString(5, user.getAnswer());
+            ps.setString(6, user.getUsername());
+            
+            return ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    public static int deleteUser(User user) throws IOException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+            String username = "root";
+            String password = "root";
+            Connection connection = DriverManager.getConnection(dbURL, username, password);
+
+            String preparedSQL = "DELETE FROM user WHERE username = ?";
+            
+            //add values to the above SQL statement and execute it.
+            PreparedStatement ps = connection.prepareStatement(preparedSQL);
+            ps.setString(1, user.getUsername());
+
+            return ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+        return 0;
     }
 }

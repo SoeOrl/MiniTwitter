@@ -7,6 +7,9 @@ package business;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.regex.Pattern;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
 
 /**
  *
@@ -43,8 +46,12 @@ public final class Twit {
     }
 
     ArrayList<String> parseMentionedUsernames() {
-        ArrayList<User> mentionedUsers = new ArrayList<>();
-
+        ArrayList<String> mentionedUsernames = new ArrayList<>();
+        Matcher matcher = Pattern.compile("(?<=\\s@)[\\d|\\w]+").matcher(twit);
+        while(matcher.find()) {
+            mentionedUsernames.add(matcher.group());
+        }
+        
         return mentionedUsernames;
     }
     

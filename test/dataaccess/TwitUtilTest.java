@@ -7,12 +7,17 @@ package dataaccess;
 
 import business.Twit;
 import business.User;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import utils.RandomUser;
+
 import static org.junit.Assert.*;
 
 /**
@@ -20,24 +25,36 @@ import static org.junit.Assert.*;
  * @author jdodso227
  */
 public class TwitUtilTest {
-    
-    public TwitUtilTest() {
-    }
-    
+
+    static User user;
+    static PreparedStatement ps;
+    static Connection connection;
+
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+        String username = "root";
+        String password = "root";
+        connection = DriverManager.getConnection(dbURL, username, password);
+
     }
-    
+
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws Exception {
+        connection.close();
     }
-    
+
     @Before
-    public void setUp() {
+    public void setUpTest() throws Exception {
+        user = RandomUser.generate();
+        UserUtil.insertUser(user);
+
     }
-    
+
     @After
-    public void tearDown() {
+    public void tearDownTest() throws Exception {
+        UserUtil.deleteUser(user);
     }
 
     /**
@@ -46,7 +63,7 @@ public class TwitUtilTest {
     @Test
     public void testInsertTwit() throws Exception {
         System.out.println("insertTwit");
-        User user = null;
+        
         Twit twit = null;
         int expResult = 0;
         int result = TwitUtil.insertTwit(user, twit);
@@ -83,5 +100,5 @@ public class TwitUtilTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }
