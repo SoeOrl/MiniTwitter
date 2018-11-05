@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.Emailer;
 
-import static dataaccess.UserUtil.searchByEmail;
-import static dataaccess.UserUtil.searchByUsername;
-import static dataaccess.UserUtil.insertUser;
+import static dataaccess.UserUtil.*;
 
 public class MembershipServlet extends HttpServlet {
 

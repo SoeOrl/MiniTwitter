@@ -18,18 +18,16 @@ public final class User implements Serializable {
     //define attributes fullname, ...
 
     //define set/get methods for all attributes.
-    private String fullName;
+    private PublicUserInfo publicUserInfo;
     private String email;
-    private String username;
     private String password;
     private LocalDate birthdate;
     private int questionNo;
     private String answer;
 
     public User() {
-        fullName = "";
+        publicUserInfo = new PublicUserInfo();
         email = "";
-        username = "";
         password = "";
         birthdate = null;
         questionNo = -1;
@@ -38,9 +36,9 @@ public final class User implements Serializable {
     
     public User(String fullName, String email, String username, String password,
             LocalDate birthdate, int questionNo, String answer) {
-        this.fullName = fullName;
+        this.publicUserInfo.fullName = fullName;
         this.email = email;
-        this.username = username;
+        this.publicUserInfo.username = username;
         this.password = password;
         this.birthdate = birthdate;
         this.questionNo = questionNo;
@@ -57,13 +55,17 @@ public final class User implements Serializable {
         this.setQuestionNo(data[5]);
         this.setAnswer(data[6]);
     }
+    
+    public PublicUserInfo getPublicUserInfo() {
+        return this.publicUserInfo;
+    }
 
     public String getFullName() {
-        return this.fullName;
+        return this.publicUserInfo.fullName;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.publicUserInfo.fullName = fullName;
     }
 
     public String getEmail() {
@@ -75,11 +77,11 @@ public final class User implements Serializable {
     }
 
     public String getUsername() {
-        return this.username;
+        return this.publicUserInfo.username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.publicUserInfo.username = username;
     }
 
     public String getPassword() {
@@ -134,8 +136,8 @@ public final class User implements Serializable {
     }
     
     public boolean equals(User user) {
-        return fullName.equals(user.getFullName()) && email.equals(user.getEmail()) &&
-                username.equals(user.getUsername()) && password.equals(user.getPassword()) &&
+        return this.publicUserInfo.fullName.equals(user.getFullName()) && email.equals(user.getEmail()) &&
+                this.publicUserInfo.username.equals(user.getUsername()) && password.equals(user.getPassword()) &&
                 birthdate.equals(user.getBirthdate()) && questionNo == user.questionNo &&
                 answer.equals(user.getAnswer());
     }

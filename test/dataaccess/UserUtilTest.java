@@ -5,6 +5,7 @@
  */
 package dataaccess;
 
+import business.PublicUserInfo;
 import business.User;
 import business.Twit;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import utils.RandomUser;
 import static org.junit.Assert.*;
 import static dataaccess.UserUtil.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -114,7 +117,7 @@ public class UserUtilTest {
         insertUser(user);
         User result = searchByUsername(user.getUsername());
         assertTrue(user.equals(result));
-        
+
         deleteUser(user);
         result = searchByUsername(user.getUsername());
         assertNull(result);
@@ -126,13 +129,13 @@ public class UserUtilTest {
     @Test
     public void testUpdateUser() throws Exception {
         insertUser(user);
-        
+
         user.setFullName("Joe D");
         user.setBirthdate(LocalDate.of(1991, 12, 30));
-        
+
         int result = updateUser(user);
         assertTrue(result == 1);
-        
+
         assertTrue(user.equals(searchByUsername(user.getUsername())));
     }
 }
