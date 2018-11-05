@@ -101,4 +101,18 @@ public class TwitUtilTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     * Test of getNumUserTwits method, of class TwitUtil.
+     */
+    @Test
+    public void testGetNumUserTwits() throws Exception {
+        System.out.println("getNumUserTwits");
+        User user = null;
+        int expResult = 0;
+        int result = TwitUtil.getNumUserTwits(user);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
 }

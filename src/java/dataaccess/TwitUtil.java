@@ -112,6 +112,38 @@ public class TwitUtil {
             return null;
         }
     }
+    
+    public static int getNumUserTwits(User user) throws IOException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
+            String dbusername = "root";
+            String dbpassword = "root";
+            Connection connection = DriverManager.getConnection(dbURL, dbusername, dbpassword);
+
+            String query 
+                    = "SELECT COUNT(*) as numTwits "
+                    + "FROM twit"
+                    + "JOIN user ON user.userid = twit.twitid "
+                    + "WHERE user.username = ?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            //add value to the above SQL statement and execute it.
+            ps.setString(1, user.getUsername());
+
+            ResultSet result = ps.executeQuery();
+
+            return result.getInt("numTwits");
+
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+
+            return 0;
+        }
+    }
 
     public static int deleteTwit(User user, int twitId) throws IOException, ClassNotFoundException {
         try {
