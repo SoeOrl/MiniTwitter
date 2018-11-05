@@ -158,8 +158,12 @@ public class HomepageServlet extends HttpServlet {
             for (int i = 0; i < usernames.size(); ++i) {
                 allUsersExist = allUsersExist && (UserUtil.searchByUsername(usernames.get(i)) != null);
             }
-
+        }
+        catch(IOException | ClassNotFoundException e)
+        {
+            allUsersExist = false;
+       }
             return allUsersExist;
         }
-    }
+    
 }

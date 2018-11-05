@@ -53,7 +53,7 @@
                             <form action="homepage" id="composeTweet" method="post">
                                 <textarea id="twitBody" name="twitBody" cols="60" rows="5" maxlength="280" form="composeTweet"></textarea>
                                 <input type="submit" value="Tweet" id="tweetButton">
-                                <input type="hidden" id="createtwit" name="action" value="createtwit">
+                                <input type="hidden" id="createtwit" name="action" value="createTwit">
                             </form> 
                         </div>
                     </div>
