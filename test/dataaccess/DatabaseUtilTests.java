@@ -6,6 +6,7 @@
 package dataaccess;
 
 import business.User;
+import business.Twit;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,13 +21,13 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static dataaccess.UserDB.insert;
+import static dataaccess.DatabaseUtil.*;
 
 /**
  *
  * @author jdodso227
  */
-public class UserDBTest {
+public class DatabaseUtilTests {
 
     static User user;
     static Connection connection;
@@ -64,13 +65,13 @@ public class UserDBTest {
     }
 
     /**
-     * Test of insert method, of class UserDB.
+     * Test of insert method, of class DatabaseUtil.
      */
     @Test
-    public void testInsert() throws SQLException, IOException, ClassNotFoundException {
+    public void testInsertUser() throws SQLException, IOException, ClassNotFoundException {
 
         // insert user and verify user in database
-        insert(user);
+        insertUser(user);
         
         ps = connection.prepareStatement("SELECT * from user");
         ResultSet result = ps.executeQuery();
@@ -86,28 +87,47 @@ public class UserDBTest {
     }
 
     /**
-     * Test of searchByEmail method, of class UserDB.
+     * Test of searchByEmail method, of class DatabaseUtil.
      */
     @Test
     public void testSearchByEmail() throws Exception {
         String email = "test@tester.test";
         User expResult = user;
         
-        insert(user);
-        User result = UserDB.searchByEmail(email);
+        insertUser(user);
+        User result = DatabaseUtil.searchByEmail(email);
         assertTrue(expResult.equals(result));
     }
 
     /**
-     * Test of searchByUsername method, of class UserDB.
+     * Test of searchByUsername method, of class DatabaseUtil.
      */
     @Test
     public void testSearchByUsername() throws Exception {
         String username = "testuser";
         User expResult = user;
         
-        insert(user);
-        User result = UserDB.searchByUsername(username);
+        insertUser(user);
+        User result = DatabaseUtil.searchByUsername(username);
         assertTrue(expResult.equals(result));
+    }
+    
+    /**
+     * Test of insertTwit method, of class DatabaseUtil.
+     */
+    @Test
+    public void testInsertTwit() throws Exception {
+        user = new User("[Test Tester,test@tester.test,testuser,testpass,1991-01-30,1,Rascal]");
+
+        User originUser = new User("Joe Dodson,jodo@testing.com,jodouser,jodopass,1991-01-01,1,Spot]");
+        User mentionedUser = new User("Soeren sdklfjasd,soeren@testing.com,soerenuser,soerenpass,1991-01-02,1,Rufus]");
+        
+        insertUser(originUser);
+        insertUser(mentionedUser);
+        
+        Twit twit = new Twit(originUser, "Hey there @soerenuser, what's up?");
+        insertTwit(originUser, twit);
+        
+        
     }
 }

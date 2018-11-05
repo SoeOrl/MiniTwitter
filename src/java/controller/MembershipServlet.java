@@ -8,31 +8,32 @@ package controller;
 import business.User;
 import business.UserValidator;
 import business.SecurityQuestion;
-import dataaccess.UserDB;
+import dataaccess.DatabaseUtil;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.mail.MessagingException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.Emailer;
 
-import static dataaccess.UserDB.insert;
-import static dataaccess.UserDB.searchByEmail;
-import static dataaccess.UserDB.searchByUsername;
+import static dataaccess.DatabaseUtil.searchByEmail;
+import static dataaccess.DatabaseUtil.searchByUsername;
+import static dataaccess.DatabaseUtil.insertUser;
 
 public class MembershipServlet extends HttpServlet {
 
+    /**
+     * Allows JSP to reference security question strings
+     *
+     * @throws ServletException
+     */
     @Override
     public void init() throws ServletException {
         getServletContext().setAttribute("securityQuestions", SecurityQuestion.values());
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -87,7 +88,7 @@ public class MembershipServlet extends HttpServlet {
 
                         if (userValidator.isValid()) {
                             // insert to db
-                            if (insert(user) != 0) {
+                            if (insertUser(user) != 0) {
                                 forwardUrl = "/home.jsp";
                                 session.setAttribute("user", user);
 
@@ -105,7 +106,7 @@ public class MembershipServlet extends HttpServlet {
                         forwardUrl = "/signup.jsp";
                     }
                     break;
-                    
+
                 case "login":
                     String identity = request.getParameter("identity");
                     String password = request.getParameter("password");
@@ -120,23 +121,23 @@ public class MembershipServlet extends HttpServlet {
                         message = "Username/email or password are incorrect";
                         forwardUrl = "/login.jsp";
                     } else {
-                        forwardUrl = "/home.jsp";
                         session.setAttribute("user", user);
+                        response.sendRedirect("homepage");
                     }
                     break;
-                    
+
                 case "logout":
                     user = null;
                     forwardUrl = "/login.jsp";
                     session.setAttribute("user", user);
                     break;
-                    
+
                 case "forgotpw":
                     String email = request.getParameter("email");
                     int questionNo = Integer.parseInt(request.getParameter("questionNo"));
                     String answer = request.getParameter("answer");
 
-                    user = UserDB.searchByEmail(email);
+                    user = DatabaseUtil.searchByEmail(email);
 
                     if (user == null) {
                         message = "No user with that email exists";
@@ -154,7 +155,7 @@ public class MembershipServlet extends HttpServlet {
 
                     forwardUrl = "/forgotpassword.jsp";
                     break;
-                    
+
                 default:
                     break;
             }
@@ -165,9 +166,11 @@ public class MembershipServlet extends HttpServlet {
         } finally {
             session.setAttribute("message", message);
 
-            getServletContext()
-                    .getRequestDispatcher(forwardUrl)
-                    .forward(request, response);
+            if (!forwardUrl.isEmpty()) {
+                getServletContext()
+                        .getRequestDispatcher(forwardUrl)
+                        .forward(request, response);
+            }
         }
     }
 }

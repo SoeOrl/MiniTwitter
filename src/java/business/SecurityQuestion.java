@@ -15,8 +15,8 @@ public enum SecurityQuestion {
     CAR(2, "What was the make of your first car?"),
     SCHOOL(3, "What was the name of the first school you went to?");
 
-    private int questionNo;
-    private String questionText;
+    private final int questionNo;
+    private final String questionText;
 
     private SecurityQuestion(int questionNo, String questionText) {
         this.questionNo = questionNo;
