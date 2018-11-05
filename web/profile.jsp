@@ -11,6 +11,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+        <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
         <script src="includes/main.js"></script>
     </head>
 
@@ -30,19 +31,19 @@ and open the template in the editor.
 
             <div class="field_container">
                 <label class="pad_top">Full Name:</label>
-                <input type="text" id="fullName" name="fullName" value="${cookie.fullName}">
+                <input type="text" id="fullName" name="fullName" value="${user.fullName}">
                 <span id="fullName_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Username:</label>
-                <input type="text" id="username" name="username" value="${cookie.username}" disabled>
+                <input type="text" id="username" name="username" value="${user.username}" disabled>
                 <span id="username_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Email:</label>
-                <input type="email" id="email" name="email" value="${cookie.email}" disabled>
+                <input type="email" id="email" name="email" value="${user.email}" disabled>
                 <span id="email_error" class="errorspan">*</span>
             </div>
             <div class="field_container">
@@ -51,25 +52,25 @@ and open the template in the editor.
             </div>
             <div class="field_container">
                 <label class="pad_top">Password:</label>
-                <input type="password" id="password" name="password" value="${cookie.password}">
+                <input type="password" id="password" name="password" value="${user.password}">
                 <span id="password_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Confirm Password:</label>
-                <input type="password" id="confirmpassword" name="confirmPassword" value="${cookie.password}">
+                <input type="password" id="confirmpassword" name="confirmPassword" value="${user.password}">
                 <span id="confirmpassword_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Date of Birth:</label>
-                <input type="date" id="dateofbirth" name="birthdate" value="${cookie.dateofbirth}">
+                <input type="date" id="dateofbirth" name="birthdate" value="${user.birthdate}">
                 <span id="dateofbirth_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Security Question:</label>
-                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo" value="${cookie.questionNo}">
+                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo" selected="${user.questionNo}">
                     <c:forEach items="${securityQuestions}" var="securityQuestion">
                         <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
                     </c:forEach>
@@ -77,7 +78,7 @@ and open the template in the editor.
             </div>
             <div class="field_container" id="answer">
                 <label class="pad_top">Answer:</label>
-                <input type="text" id="securityAnswer" value="${cookie.answer}">
+                <input type="text" id="securityAnswer" value="${user.answer}">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
             <input type="hidden" name="action" value="profile">

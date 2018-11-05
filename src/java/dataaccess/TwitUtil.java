@@ -35,7 +35,7 @@ public class TwitUtil {
             preparedSQL.append("VALUES ((SELECT userId FROM user WHERE username = ?), ?, ?);");
 
             ArrayList<String> mentionedUsernames = twit.getMentionedUsernames();
-            if (mentionedUsernames.size() > 0) {
+            if (mentionedUsernames != null && mentionedUsernames.size() > 0) {
                 preparedSQL.append("INSERT INTO userMention(originUserId, mentionedUserId, twitId) VALUES ");
 
                 for (int i = 0; i < mentionedUsernames.size(); ++i) {
@@ -102,7 +102,6 @@ public class TwitUtil {
                         results.getInt("twitId"),
                         results.getTimestamp("postedDateTime").toLocalDateTime()));
             }
-
             return twits;
 
         } catch (SQLException e) {

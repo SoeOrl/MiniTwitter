@@ -9,8 +9,8 @@ and open the template in the editor.
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <title>MiniTwitter</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+        <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
         <script src="includes/main.js"></script>
     </head>
 
@@ -66,7 +66,6 @@ and open the template in the editor.
                 <input type="date" id="dateofbirth" name="birthdate">
                 <span id="dateofbirth_error" class="errorspan">*</span>
             </div>
-
             <div class="field_container">
                 <label class="pad_top">Security Question:</label>
                 <select required onChange="toggleAnswer()" name="questionNo" id="questionNo">

@@ -144,7 +144,7 @@ select {
 }
 
 #signOut {
-    float: right;
+    float:right;
     width: 100px;
     font-size: 20px;
     line-height: 20px;
@@ -169,16 +169,16 @@ textarea {
 .topProfile {
     background-color: blue;
     top: 0px;
-    height: 50%;
-    width: 100% !important;
+    height:140px;
+    width: 310px !important;
     border: 0px;
 }
 
 .bottomProfile {
     background-color: white;
     bottom: 0px;
-    height: 50%;
-    width: 100%  !important;
+    height:70px;
+    width: 310px !important;
     border: 0px;
 }
 #profileImage {
@@ -206,10 +206,11 @@ textarea {
 #profileContainer {
     padding: 0px;
     margin-right: 20px;
+    height: 280px;
 }
 
 #Trending{
-    margin-top: 50px;
+    margin-top: 100px;
     height: auto;
     background-color: white;
     
@@ -236,3 +237,22 @@ textarea {
 {
     padding: 40px;
 }
+
+#imageFollowHomepage
+{
+    position:relative;
+    z-index: 1;
+    padding: 5px;
+    
+}
+
+.showTweets{
+    word-wrap: break-word;
+    max-width: 600px;
+}
+
+.twitHomepage{
+    background-color: lightblue;
+    margin: 10px;
+}
+footer{position: absolute; bottom: 0; left: 0; right: 0;}

@@ -122,15 +122,18 @@ public class HomepageServlet extends HttpServlet {
     boolean allMentionedUsersExist(Twit twit) {
         ArrayList<String> usernames = twit.getMentionedUsernames();
         boolean allUsersExist = true;
-
-        try {
-            for (int i = 0; i < usernames.size(); ++i) {
-                allUsersExist = allUsersExist && (searchByUsername(usernames.get(i)) != null);
+        if (usernames == null) {
+            return allUsersExist;
+        } else {
+            try {
+                for (int i = 0; i < usernames.size(); ++i) {
+                    allUsersExist = allUsersExist && (searchByUsername(usernames.get(i)) != null);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                allUsersExist = false;
             }
-        } catch (IOException | ClassNotFoundException e) {
-            allUsersExist = false;
-        }
 
-        return allUsersExist;
+            return allUsersExist;
+        }
     }
 }
