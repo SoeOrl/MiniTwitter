@@ -36,9 +36,8 @@ public final class User implements Serializable {
     
     public User(String fullName, String email, String username, String password,
             LocalDate birthdate, int questionNo, String answer) {
-        this.publicUserInfo.fullName = fullName;
+        this.publicUserInfo = new PublicUserInfo(fullName, username);
         this.email = email;
-        this.publicUserInfo.username = username;
         this.password = password;
         this.birthdate = birthdate;
         this.questionNo = questionNo;
