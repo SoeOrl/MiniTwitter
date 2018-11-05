@@ -1,12 +1,14 @@
 package dataaccess;
 
 import business.User;
+import business.PublicUserInfo;
 import business.Twit;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -89,7 +91,7 @@ public class UserUtil {
 
         return null;
     }
-    
+
     public static int updateUser(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -98,7 +100,7 @@ public class UserUtil {
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
-            String preparedSQL 
+            String preparedSQL
                     = "UPDATE user "
                     + "SET "
                     + "  fullName = ?, "
@@ -107,7 +109,7 @@ public class UserUtil {
                     + "  questionNo = ?, "
                     + "  answer = ? "
                     + "WHERE username = ?";
-            
+
             //add values to the above SQL statement and execute it.
             PreparedStatement ps = connection.prepareStatement(preparedSQL);
             ps.setString(1, user.getFullName());
@@ -116,9 +118,9 @@ public class UserUtil {
             ps.setInt(4, user.getQuestionNo());
             ps.setString(5, user.getAnswer());
             ps.setString(6, user.getUsername());
-            
+
             return ps.executeUpdate();
-            
+
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
@@ -136,18 +138,47 @@ public class UserUtil {
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
             String preparedSQL = "DELETE FROM user WHERE username = ?";
-            
+
             //add values to the above SQL statement and execute it.
             PreparedStatement ps = connection.prepareStatement(preparedSQL);
             ps.setString(1, user.getUsername());
 
             return ps.executeUpdate();
-            
+
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
         }
         return 0;
+    }
+
+    public static ArrayList<PublicUserInfo> getAllUsers() throws IOException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+            String username = "root";
+            String password = "root";
+            Connection connection = DriverManager.getConnection(dbURL, username, password);
+
+            String sql = "SELECT fullName, username FROM user";
+
+            //add values to the above SQL statement and execute it.
+            Statement st = connection.createStatement();
+            ResultSet results = st.executeQuery(sql);
+
+            ArrayList<PublicUserInfo> allUsers = new ArrayList<>();
+            while (results.next()) {
+                allUsers.add(new PublicUserInfo(results.getString("fullName"), results.getString("username")));
+            }
+            
+            return allUsers;
+
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+        return null;
     }
 }

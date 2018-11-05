@@ -41,10 +41,12 @@ public class HomepageServlet extends HttpServlet {
 
         try {
             session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
+            session.setAttribute("numTwits", getNumUserTwits(user));
+            session.setAttribute("allUsers", UserUtil.getAllUsers());
             forwardUrl = "/home.jsp";
 
         } catch (IOException | ClassNotFoundException e) {
-            message = "Server Error - Could not retrieve user twits";
+            message = "Server Error - Could not retrieve your twits or other users' information";
             forwardUrl = "/login.jsp";
         }
 
