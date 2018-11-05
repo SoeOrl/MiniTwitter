@@ -24,7 +24,8 @@ insert into twit(userId, twit) values
 
 
 # see all twits from or about a username
-select originUsername, originFullname, twit, postedDateTime from
+use twitterdb;
+select originUsername, originFullname, named_twits.twitid, twit, postedDateTime from
 (select twitid, twit, twit.userid, username as originUsername, fullname as originFullname, postedDateTime from twit
 	join user on twit.userid = user.userid) as named_twits
 left join 

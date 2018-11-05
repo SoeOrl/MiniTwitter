@@ -8,7 +8,7 @@ package controller;
 import business.User;
 import business.UserValidator;
 import business.SecurityQuestion;
-import dataaccess.DatabaseUtil;
+import dataaccess.UserUtil;
 import java.io.IOException;
 import javax.mail.MessagingException;
 import javax.servlet.ServletException;
@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.Emailer;
 
-import static dataaccess.DatabaseUtil.searchByEmail;
-import static dataaccess.DatabaseUtil.searchByUsername;
-import static dataaccess.DatabaseUtil.insertUser;
+import static dataaccess.UserUtil.searchByEmail;
+import static dataaccess.UserUtil.searchByUsername;
+import static dataaccess.UserUtil.insertUser;
 
 public class MembershipServlet extends HttpServlet {
 
@@ -137,7 +137,7 @@ public class MembershipServlet extends HttpServlet {
                     int questionNo = Integer.parseInt(request.getParameter("questionNo"));
                     String answer = request.getParameter("answer");
 
-                    user = DatabaseUtil.searchByEmail(email);
+                    user = UserUtil.searchByEmail(email);
 
                     if (user == null) {
                         message = "No user with that email exists";

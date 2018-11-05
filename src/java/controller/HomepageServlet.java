@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static dataaccess.DatabaseUtil.insertTwit;
-import static dataaccess.DatabaseUtil.getTwitsForUsername;
+import static dataaccess.TwitUtil.*;
+import static dataaccess.UserUtil.*;
 
 /**
  *
@@ -36,10 +36,9 @@ public class HomepageServlet extends HttpServlet {
 
         String message = "";
         String forwardUrl = "";
-        
+
         try {
-            ArrayList<Twit> userTwits = getTwitsForUsername(user.getUsername());
-            session.setAttribute("userTwits", userTwits);
+            session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
             forwardUrl = "/home.jsp";
 
         } catch (IOException | ClassNotFoundException e) {
@@ -68,25 +67,70 @@ public class HomepageServlet extends HttpServlet {
             message = "Server Error - User could not be validated";
             forwardUrl = "/login.jsp";
         } else {
-
             try {
                 switch (action) {
-                    case "twit":
-                        String twitBody = request.getParameter("twit");
+                    case "createtwit":
+                        String twitBody = request.getParameter("twitBody");
+                        forwardUrl = "/home.jsp";
 
                         if (twitBody.length() > MAX_TWIT_LENGTH) {
                             message = "Twit length must be 280 characters or less";
-                            forwardUrl = "/home.jsp";
                         } else {
                             Twit twit = new Twit(user.getUsername(), user.getFullName(), twitBody);
-                            insertTwit(user, twit);
+
+                            if (allMentionedUsersExist(twit)) {
+                                insertTwit(user, twit);
+
+                                session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
+                            } else {
+                                message = "One or more mentioned users do not exist";
+                            }
                         }
 
                         break;
-                }
-            } catch (Exception e) {
 
+                    case "deletetwit":
+                        Twit twit = (Twit) session.getAttribute("twit");
+                        deleteTwit(user, twit.getTwitId());
+
+                        session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
+
+                        forwardUrl = "/home.jsp";
+                        break;
+
+                    default:
+                        message = "Unknown Server Error";
+                        forwardUrl = "/home.jsp";
+                }
+
+            } catch (Exception e) {
+                message = e.getMessage();
+                forwardUrl = "/home.jsp";
+
+            } finally {
+                session.setAttribute("message", message);
+
+                if (!forwardUrl.isEmpty()) {
+                    getServletContext()
+                            .getRequestDispatcher(forwardUrl)
+                            .forward(request, response);
+                }
             }
         }
+    }
+
+    boolean allMentionedUsersExist(Twit twit) {
+        ArrayList<String> usernames = twit.getMentionedUsernames();
+        boolean allUsersExist = true;
+
+        try {
+            for (int i = 0; i < usernames.size(); ++i) {
+                allUsersExist = allUsersExist && (searchByUsername(usernames.get(i)) != null);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            allUsersExist = false;
+        }
+
+        return allUsersExist;
     }
 }
