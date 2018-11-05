@@ -34,7 +34,7 @@
                         <div class="userTweets">
 
                             TWEETS<br>
-                            Number of Tweets
+                            ${numTwits}
                         </div>
                     </div>
 
@@ -70,8 +70,13 @@
 
 
                 <div class="col-3 ">
+                    Who to Follow
                     <div class="whoToFollow rounded">
-                        Who to follow
+                         <c:forEach items="${allUsers}" var="followUsers">
+                             <div>
+                                 ${followUsers}
+                             </div>
+                         </c:forEach>
                     </div>
                 </div>
             </div>
