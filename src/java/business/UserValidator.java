@@ -2,8 +2,8 @@ package business;
 
 import java.io.IOException;
 
-import static dataaccess.DatabaseUtil.searchByEmail;
-import static dataaccess.DatabaseUtil.searchByUsername;
+import static dataaccess.UserUtil.searchByEmail;
+import static dataaccess.UserUtil.searchByUsername;
 
 /**
  * Validates if a user's fields are all valid

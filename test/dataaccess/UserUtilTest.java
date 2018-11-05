@@ -21,13 +21,13 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static dataaccess.DatabaseUtil.*;
+import static dataaccess.UserUtil.*;
 
 /**
  *
  * @author jdodso227
  */
-public class DatabaseUtilTests {
+public class UserUtilTest {
 
     static User user;
     static Connection connection;
@@ -65,7 +65,7 @@ public class DatabaseUtilTests {
     }
 
     /**
-     * Test of insert method, of class DatabaseUtil.
+     * Test of insert method, of class UserUtil.
      */
     @Test
     public void testInsertUser() throws SQLException, IOException, ClassNotFoundException {
@@ -87,7 +87,7 @@ public class DatabaseUtilTests {
     }
 
     /**
-     * Test of searchByEmail method, of class DatabaseUtil.
+     * Test of searchByEmail method, of class UserUtil.
      */
     @Test
     public void testSearchByEmail() throws Exception {
@@ -95,12 +95,12 @@ public class DatabaseUtilTests {
         User expResult = user;
         
         insertUser(user);
-        User result = DatabaseUtil.searchByEmail(email);
+        User result = UserUtil.searchByEmail(email);
         assertTrue(expResult.equals(result));
     }
 
     /**
-     * Test of searchByUsername method, of class DatabaseUtil.
+     * Test of searchByUsername method, of class UserUtil.
      */
     @Test
     public void testSearchByUsername() throws Exception {
@@ -108,26 +108,7 @@ public class DatabaseUtilTests {
         User expResult = user;
         
         insertUser(user);
-        User result = DatabaseUtil.searchByUsername(username);
+        User result = UserUtil.searchByUsername(username);
         assertTrue(expResult.equals(result));
-    }
-    
-    /**
-     * Test of insertTwit method, of class DatabaseUtil.
-     */
-    @Test
-    public void testInsertTwit() throws Exception {
-        user = new User("[Test Tester,test@tester.test,testuser,testpass,1991-01-30,1,Rascal]");
-
-        User originUser = new User("Joe Dodson,jodo@testing.com,jodouser,jodopass,1991-01-01,1,Spot]");
-        User mentionedUser = new User("Soeren sdklfjasd,soeren@testing.com,soerenuser,soerenpass,1991-01-02,1,Rufus]");
-        
-        insertUser(originUser);
-        insertUser(mentionedUser);
-        
-        Twit twit = new Twit(originUser, "Hey there @soerenuser, what's up?");
-        insertTwit(originUser, twit);
-        
-        
-    }
+    } 
 }

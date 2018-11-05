@@ -18,28 +18,26 @@ public final class Twit {
     String originFullname;
     ArrayList<String> mentionedUsernames;
     String twit;
+    int twitId;
     LocalDateTime postedDateTime;
 
     public Twit() {
-        originUsername = null;
-        originFullname = null;
-        twit = "";
-        postedDateTime = LocalDateTime.now();
-        mentionedUsernames = new ArrayList<>();
+        this(null, null, "", -1, LocalDateTime.now());
     }
 
     public Twit(String originUsername, String originFullname, String twit) {
-        this.originUsername = originUsername;
-        this.originFullname = originFullname;
-        this.twit = twit;
-        this.postedDateTime = LocalDateTime.now();
-        this.mentionedUsernames = parseMentionedUsernames();
+        this(originUsername, originFullname, twit, -1, LocalDateTime.now());
     }
 
     public Twit(String originUsername, String originFullname, String twit, LocalDateTime postedDateTime) {
+        this(originUsername, originFullname, twit, -1, postedDateTime);
+    }
+    
+    public Twit(String originUsername, String originFullname, String twit, int twitId, LocalDateTime postedDateTime) {
         this.originUsername = originUsername;
         this.originFullname = originFullname;
         this.twit = twit;
+        this.twitId = twitId;
         this.postedDateTime = postedDateTime;
         this.mentionedUsernames = parseMentionedUsernames();
     }
@@ -65,6 +63,10 @@ public final class Twit {
     public void setTwit(String twit) {
         this.twit = twit;
         this.mentionedUsernames = parseMentionedUsernames();
+    }
+    
+    public int getTwitId() {
+        return twitId;
     }
 
     public ArrayList<String> getMentionedUsernames() {
