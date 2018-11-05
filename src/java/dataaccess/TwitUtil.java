@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * @author jdodso227
  */
 public class TwitUtil {
+
     public static int insertTwit(User user, Twit twit) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -112,7 +113,7 @@ public class TwitUtil {
             return null;
         }
     }
-    
+
     public static int getNumUserTwits(User user) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -121,10 +122,10 @@ public class TwitUtil {
             String dbpassword = "root";
             Connection connection = DriverManager.getConnection(dbURL, dbusername, dbpassword);
 
-            String query 
+            String query
                     = "SELECT COUNT(*) as numTwits "
-                    + "FROM twit"
-                    + "JOIN user ON user.userid = twit.twitid "
+                    + "FROM twit "
+                    + "JOIN user ON user.userid = twit.userid "
                     + "WHERE user.username = ?";
 
             PreparedStatement ps = connection.prepareStatement(query);
@@ -134,15 +135,17 @@ public class TwitUtil {
 
             ResultSet result = ps.executeQuery();
 
-            return result.getInt("numTwits");
+            if (result.next()) {
+                return result.getInt("numTwits");
+            }
 
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
-
-            return 0;
         }
+        
+        return 0;
     }
 
     public static int deleteTwit(User user, int twitId) throws IOException, ClassNotFoundException {
@@ -173,5 +176,5 @@ public class TwitUtil {
 
             return 1;
         }
-    } 
+    }
 }
