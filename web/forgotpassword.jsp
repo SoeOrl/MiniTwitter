@@ -7,11 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
     <body>
         <head>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -52,8 +47,8 @@
                 <input type="text" id="securityAnswer" name="answer">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
-            <input type="hidden" name="action" value="forgotPassword">
-            <input type="submit" class="submit" name="submit" value="Sign Up">
+            <input type="hidden" name="action" value="forgotpw">
+            <input type="submit" class="submit" name="submit" value="Send Email">
         </form>
 
         <footer>   
