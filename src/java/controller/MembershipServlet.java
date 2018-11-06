@@ -87,9 +87,8 @@ public class MembershipServlet extends HttpServlet {
                         if (userValidator.isValid()) {
                             // insert to db
                             if (insertUser(user) != 0) {
-                                forwardUrl = "/home.jsp";
                                 session.setAttribute("user", user);
-
+                                response.sendRedirect("homepage");
                             } else {
                                 message = "Server Error - Could not complete request";
                                 forwardUrl = "/signup.jsp";

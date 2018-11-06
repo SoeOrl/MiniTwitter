@@ -75,8 +75,7 @@
                          <c:forEach items="${allUsers}" var="followUsers">
                              <div>
                                  <c:if test="${followUsers.username != user.username}">
-                                 ${followUsers.fullName}<br>
-                                 ${followUsers.username}
+                                     <b>${followUsers.fullName}</b> <a class="username">@${followUsers.username}</a>
                                  </c:if>
                              </div>
                          </c:forEach>

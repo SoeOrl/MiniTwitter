@@ -43,6 +43,7 @@ public final class Twit {
         this.twitId = twitId;
         this.postedDateTime = postedDateTime;
         this.mentionedUsernames = parseMentionedUsernames();
+        wrapMentionsInHtml();
     }
 
     ArrayList<String> parseMentionedUsernames() {
@@ -53,6 +54,10 @@ public final class Twit {
         }
         
         return mentionedUsernames;
+    }
+    
+    void wrapMentionsInHtml() {
+        this.twit = twit.replaceAll("(?<=\\s)(@[\\d|\\w]+)", "<a class=mention>$1</a>");
     }
     
     public String getOriginUsername() {
