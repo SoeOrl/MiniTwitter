@@ -79,15 +79,13 @@
                 <div class="col-3 ">
                     Who to Follow
                     <div class="whoToFollow rounded">
-                        <c:forEach items="${allUsers}" var="followUsers">
-                            <div class="followHomepage">
-                                <c:if test="${followUsers.username != user.username}">
-                                    <img class="img-responsive rounded" id="twitImage" alt="" src="http://placehold.it/50x50">
-                                    ${followUsers.fullName}<br>
-                                    @${followUsers.username}
-                                </c:if>
-                            </div>
-                        </c:forEach>
+                         <c:forEach items="${allUsers}" var="followUsers">
+                             <div>
+                                 <c:if test="${followUsers.username != user.username}">
+                                     <b>${followUsers.fullName}</b> <a class="username">@${followUsers.username}</a>
+                                 </c:if>
+                             </div>
+                         </c:forEach>
                     </div>
                 </div>
             </div>

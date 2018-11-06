@@ -30,27 +30,10 @@ public class TwitUtil {
             String password = "root";
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
+            // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
-
             preparedSQL.append("INSERT INTO twit(userId, twit, postedDateTime) ");
             preparedSQL.append("VALUES ((SELECT userId FROM user WHERE username = ?), ?, ?);");
-
-            ArrayList<String> mentionedUsernames = twit.getMentionedUsernames();
-            if (mentionedUsernames != null && mentionedUsernames.size() > 0) {
-                preparedSQL.append("INSERT INTO userMention(originUserId, mentionedUserId, twitId) VALUES ");
-
-                for (int i = 0; i < mentionedUsernames.size(); ++i) {
-                    preparedSQL.append(String.format("((SELECT userId FROM user WHERE username = '%s'), "
-                            + "(SELECT userId FROM user WHERE username = '%s'), "
-                            + "LAST_INSERT_ID())", user.getUsername(), mentionedUsernames.get(i)));
-
-                    if (i != mentionedUsernames.size() - 1) {
-                        preparedSQL.append(", ");
-                    } else {
-                        preparedSQL.append(";");
-                    }
-                }
-            }
 
             //add values to the above SQL statement and execute it.
             PreparedStatement ps = connection.prepareStatement(preparedSQL.toString());
@@ -58,13 +41,56 @@ public class TwitUtil {
             ps.setString(2, twit.getTwit());
             ps.setTimestamp(3, Timestamp.valueOf(twit.getPostedDateTime()));
 
-            return ps.executeUpdate();
+            if (ps.executeUpdate() == 1) {
+                int mentionResult = insertMention(user, twit, connection);
+
+                if (mentionResult == twit.getMentionedUsernames().size()) {
+                    return 1;
+                } else {
+                    //user mention insert failed, delete twit
+                    preparedSQL.setLength(0);
+                    preparedSQL.append("DELETE FROM twit WHERE twitId = LAST_INSERT_ID()");
+
+                    ps = connection.prepareStatement(preparedSQL.toString());
+                    ps.executeUpdate();
+
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
         }
         return 0;
+    }
+
+    private static int insertMention(User user, Twit twit, Connection connection) throws IOException, ClassNotFoundException, SQLException {
+        final StringBuilder preparedSQL = new StringBuilder();
+
+        // insert user mentions if any
+        ArrayList<String> mentionedUsernames = twit.getMentionedUsernames();
+        if (mentionedUsernames != null && mentionedUsernames.size() > 0) {
+            preparedSQL.append("INSERT INTO userMention(originUserId, mentionedUserId, twitId) VALUES ");
+
+            for (int i = 0; i < mentionedUsernames.size(); ++i) {
+                preparedSQL.append(String.format("((SELECT userId FROM user WHERE username = '%s'), "
+                        + "(SELECT userId FROM user WHERE username = '%s'), "
+                        + "LAST_INSERT_ID())", user.getUsername(), mentionedUsernames.get(i)));
+
+                if (i != mentionedUsernames.size() - 1) {
+                    preparedSQL.append(", ");
+                } else {
+                    preparedSQL.append(";");
+                }
+            }
+        }
+
+        PreparedStatement ps = connection.prepareStatement(preparedSQL.toString());
+        return ps.executeUpdate();
     }
 
     public static ArrayList<Twit> getTwitsForUsername(String username) throws IOException, ClassNotFoundException {
@@ -76,7 +102,7 @@ public class TwitUtil {
             Connection connection = DriverManager.getConnection(dbURL, dbusername, dbpassword);
 
             String query
-                    = "SELECT originUsername, originFullname, named_twits.twitId AS twitId, twit, postedDateTime FROM "
+                    = "SELECT DISTINCT originUsername, originFullname, named_twits.twitId AS twitId, twit, postedDateTime FROM "
                     + "(SELECT twitid, twit, twit.userid, username AS originUsername, fullname AS originFullname, postedDateTime "
                     + "    FROM twit "
                     + "    JOIN user ON twit.userid = user.userid) AS named_twits "
@@ -144,7 +170,7 @@ public class TwitUtil {
                 t.printStackTrace();
             }
         }
-        
+
         return 0;
     }
 
