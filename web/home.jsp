@@ -74,7 +74,10 @@
                     <div class="whoToFollow rounded">
                          <c:forEach items="${allUsers}" var="followUsers">
                              <div>
-                                 ${followUsers}
+                                 <c:if test="${followUsers.username != user.username}">
+                                 ${followUsers.fullName}<br>
+                                 ${followUsers.username}
+                                 </c:if>
                              </div>
                          </c:forEach>
                     </div>

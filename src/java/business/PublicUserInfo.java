@@ -22,4 +22,14 @@ public class PublicUserInfo {
         this.fullName = fullName;
         this.username = username;
     } 
+    
+    public String getFullName()
+    {
+        return this.fullName;
+    }
+    
+    public String getUsername()
+    {
+        return this.username;
+    }
 }
