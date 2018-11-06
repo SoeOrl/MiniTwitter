@@ -72,7 +72,7 @@
                                 ${twit.originFullname} @${twit.originUsername}
                                 </div>
                                 ${twit.twit}
-                                <hr>
+                                
                             </div>
                         </c:forEach>
                     </div>
@@ -85,7 +85,7 @@
                          <c:forEach items="${allUsers}" var="followUsers">
                              <div>
                                  <c:if test="${followUsers.username != user.username}">
-                                     <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a>
+                                     <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a><hr>
                                  </c:if>
                              </div>
                          </c:forEach>
