@@ -40,9 +40,7 @@ public class HomepageServlet extends HttpServlet {
         String forwardUrl = "";
 
         try {
-            session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
-            session.setAttribute("numTwits", getNumUserTwits(user));
-            session.setAttribute("allUsers", UserUtil.getAllUsers());
+            updateHomepage(session);
             forwardUrl = "/home.jsp";
 
         } catch (IOException | ClassNotFoundException e) {
@@ -84,8 +82,7 @@ public class HomepageServlet extends HttpServlet {
 
                             if (allMentionedUsersExist(twit)) {
                                 insertTwit(user, twit);
-
-                                session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
+                                updateHomepage(session);
                             } else {
                                 message = "One or more mentioned users do not exist";
                             }
@@ -94,12 +91,11 @@ public class HomepageServlet extends HttpServlet {
                         break;
 
                     case "deleteTwit":
-                         String twitIdS = request.getParameter("twitToDelete");
+                        String twitIdS = request.getParameter("twitToDelete");
                         int twitId = Integer.parseInt(twitIdS);
                         deleteTwit(user, twitId);
-
-                        session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
-                        session.setAttribute("numTwits", getNumUserTwits(user));
+                        updateHomepage(session);
+                        
                         forwardUrl = "/home.jsp";
                         break;
 
@@ -119,6 +115,7 @@ public class HomepageServlet extends HttpServlet {
                                 // insert to db
                                 if (UserUtil.updateUser(user) == 1) {
                                     message = "Update Success!";
+                                    updateHomepage(session);
                                 } else {
                                     message = "Server Error - Could not complete request";
                                 }
@@ -129,7 +126,7 @@ public class HomepageServlet extends HttpServlet {
                         } catch (java.text.ParseException e) {
                             message = "Birthdate could not parsed correctly";
                         }
-                        
+
                         forwardUrl = "/profile.jsp";
                         break;
                     default:
@@ -143,7 +140,7 @@ public class HomepageServlet extends HttpServlet {
 
             } finally {
                 session.setAttribute("message", message);
-
+                
                 if (!forwardUrl.isEmpty()) {
                     getServletContext()
                             .getRequestDispatcher(forwardUrl)
@@ -161,12 +158,17 @@ public class HomepageServlet extends HttpServlet {
             for (int i = 0; i < usernames.size(); ++i) {
                 allUsersExist = allUsersExist && (UserUtil.searchByUsername(usernames.get(i)) != null);
             }
-        }
-        catch(IOException | ClassNotFoundException e)
-        {
+        } catch (IOException | ClassNotFoundException e) {
             allUsersExist = false;
-       }
-            return allUsersExist;
         }
-    
+        return allUsersExist;
+    }
+
+    void updateHomepage(HttpSession session) throws IOException, ClassNotFoundException {
+        User user = (User) session.getAttribute("user");
+
+        session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
+        session.setAttribute("numTwits", getNumUserTwits(user));
+        session.setAttribute("allUsers", UserUtil.getAllUsers());
+    }
 }

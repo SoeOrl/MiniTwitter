@@ -270,4 +270,8 @@ textarea {
     height:50px !important;
     background: black;
 }
+
+.taggable {
+    color: blue;
+}
 footer{position: fixed; bottom: 0; height: 20px}
