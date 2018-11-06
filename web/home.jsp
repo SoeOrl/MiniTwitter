@@ -61,6 +61,13 @@
                         <c:forEach items="${userTwits}" var="twit">
                             <div class="twitHomepage">
                                 <img class="img-responsive rounded" id="twitImage" alt="" src="http://placehold.it/50x50">
+                                <c:if test="${twit.originUsername == user.username}">
+                                    <form action="homepage" method="post" class="deleteTwitForm">
+                                        <input type="hidden" name="action" value="deleteTwit">
+                                        <input type="hidden" name="twitToDelete" value="${twit.twitId}">
+                                        <input class="btn btn-primary deleteTwitButton" type="submit" id="deleteTwit" value="Delete"  />
+                                    </form>
+                                </c:if>
                                 ${twit.originFullname} @${twit.originUsername}<br>
                                 ${twit.twit}
                             </div>
@@ -72,14 +79,15 @@
                 <div class="col-3 ">
                     Who to Follow
                     <div class="whoToFollow rounded">
-                         <c:forEach items="${allUsers}" var="followUsers">
-                             <div>
-                                 <c:if test="${followUsers.username != user.username}">
-                                 ${followUsers.fullName}<br>
-                                 ${followUsers.username}
-                                 </c:if>
-                             </div>
-                         </c:forEach>
+                        <c:forEach items="${allUsers}" var="followUsers">
+                            <div class="followHomepage">
+                                <c:if test="${followUsers.username != user.username}">
+                                    <img class="img-responsive rounded" id="twitImage" alt="" src="http://placehold.it/50x50">
+                                    ${followUsers.fullName}<br>
+                                    @${followUsers.username}
+                                </c:if>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
