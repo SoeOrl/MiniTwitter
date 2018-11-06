@@ -57,7 +57,7 @@ public final class Twit {
     }
     
     void wrapMentionsInHtml() {
-        this.twit = twit.replaceAll("(?<=\\s)(@[\\d|\\w]+)", "<a class=mention>$1</a>");
+        this.twit = twit.replaceAll("(?<=\\s)(@[\\d|\\w]+)", "<a class=\"taggable\">$1</a>");
     }
     
     public String getOriginUsername() {

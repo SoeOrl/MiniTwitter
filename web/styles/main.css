@@ -275,7 +275,7 @@ textarea {
     border-top: solid;
     border-bottom:solid;
 }
-.mention{
+.taggable{
     color:blue !important;
 }
 footer{position: fixed; bottom: 0; height: 20px}
