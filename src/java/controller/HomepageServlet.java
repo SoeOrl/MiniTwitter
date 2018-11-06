@@ -94,11 +94,12 @@ public class HomepageServlet extends HttpServlet {
                         break;
 
                     case "deleteTwit":
-                        Twit twit = (Twit) session.getAttribute("twit");
-                        deleteTwit(user, twit.getTwitId());
+                         String twitIdS = request.getParameter("twitToDelete");
+                        int twitId = Integer.parseInt(twitIdS);
+                        deleteTwit(user, twitId);
 
                         session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
-
+                        session.setAttribute("numTwits", getNumUserTwits(user));
                         forwardUrl = "/home.jsp";
                         break;
 
