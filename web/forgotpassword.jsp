@@ -26,7 +26,11 @@
             <div class="header"><h1>Forgot Password</h1></div>
             <div class="spacer"></div>
 
+       
             <div id="errorMessage" class="notVisible"></div>
+            <c:if test="${message != null}">
+                <div id="serverErrorMessage">${message}</div>
+            </c:if>
 
             <div class="field_container">
                 <label class="pad_top">Email:</label>
