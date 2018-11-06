@@ -2,8 +2,8 @@ package business;
 
 import java.io.IOException;
 
-import static dataaccess.UserDB.searchByEmail;
-import static dataaccess.UserDB.searchByUsername;
+import static dataaccess.UserUtil.searchByEmail;
+import static dataaccess.UserUtil.searchByUsername;
 
 /**
  * Validates if a user's fields are all valid
@@ -115,6 +115,11 @@ public class UserValidator {
 
     public boolean isValid() {
         return noInvalidChars() && fullNameIsValid() && userNameIsValid() && emailIsValid()
+                && passwordIsValid() && birthdateIsValid() && answerIsValid();
+    }
+    
+        public boolean isValidUpdate() {
+        return noInvalidChars() && fullNameIsValid()
                 && passwordIsValid() && birthdateIsValid() && answerIsValid();
     }
 }

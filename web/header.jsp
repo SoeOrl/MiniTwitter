@@ -18,13 +18,14 @@
 
             </c:when>
             <c:otherwise>
-            <a href="/home.jsp" class="btn btn-primary">Home</a>
-            <a href="/notifications.jsp" class="btn btn-primary">Notifications</a>
-            <a href="/signup.jsp" class="btn btn-primary">Profile</a>
-                <form action="membership" method="post">
+                <form action="membership" method="post" >
                     <input type="hidden" name="action" value="logout">
-                    <input type="submit" id="signOut" value="Sign out"  />
+                    <input class="btn btn-primary" type="submit" id="signOut" value="Sign out"  />
                 </form>
+                <a href="home.jsp" class="btn btn-primary">Home</a>
+                <a href="notifications.jsp" class="btn btn-primary">Notifications</a>
+                <a href="profile.jsp" class="btn btn-primary">Profile</a>
+
             </c:otherwise>
         </c:choose>
 
