@@ -20,7 +20,8 @@ and open the template in the editor.
             <c:import url="/header.jsp"/>
         </header>
 
-        <form id="signup" action="membership" method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
+        <form id="changeProfile" action="homepage" method="post" onsubmit="return validateForm();">
+            <input type="hidden" name="action" value="updateProfile" id="updateProfile">
             <div class="header"><h1>Edit your information</h1></div>
             <div class="spacer"></div>
 
@@ -78,10 +79,10 @@ and open the template in the editor.
             </div>
             <div class="field_container" id="answer">
                 <label class="pad_top">Answer:</label>
-                <input type="text" id="securityAnswer" value="${user.answer}">
+                <input type="text" id="securityAnswer" name="securityAnswer" value="${user.answer}">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
-            <input type="hidden" name="action" value="profile">
+            
             <input type="submit" class="submit" name="submit" value="Update">
         </form>
 

@@ -117,4 +117,9 @@ public class UserValidator {
         return noInvalidChars() && fullNameIsValid() && userNameIsValid() && emailIsValid()
                 && passwordIsValid() && birthdateIsValid() && answerIsValid();
     }
+    
+        public boolean isValidUpdate() {
+        return noInvalidChars() && fullNameIsValid()
+                && passwordIsValid() && birthdateIsValid() && answerIsValid();
+    }
 }

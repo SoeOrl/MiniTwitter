@@ -106,16 +106,16 @@ public class HomepageServlet extends HttpServlet {
                     case "updateProfile":
                         try {
                             user.setFullName(request.getParameter("fullName"));
-                            user.setEmail(request.getParameter("email"));
-                            user.setUsername(request.getParameter("username"));
+                            user.setEmail(user.getEmail());
+                            user.setUsername(user.getUsername());
                             user.setPassword(request.getParameter("password"));
                             user.setBirthdate(request.getParameter("birthdate"));
                             user.setQuestionNo(Integer.parseInt(request.getParameter("questionNo")));
-                            user.setAnswer(request.getParameter("answer"));
+                            user.setAnswer(request.getParameter("securityAnswer"));
 
                             UserValidator userValidator = new UserValidator(user, request.getParameter("confirmPassword"));
 
-                            if (userValidator.isValid()) {
+                            if (userValidator.isValidUpdate()) {
                                 // insert to db
                                 if (UserUtil.updateUser(user) == 1) {
                                     message = "Update Success!";
