@@ -78,6 +78,7 @@ select {
 
 .pad_top {
     padding-top: 0.25em;
+    width: 8em;
 }
 
 .errorspan

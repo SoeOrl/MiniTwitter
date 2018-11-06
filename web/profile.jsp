@@ -71,18 +71,26 @@ and open the template in the editor.
 
             <div class="field_container">
                 <label class="pad_top">Security Question:</label>
-                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo" selected="${user.questionNo}">
+                <select required onChange="toggleAnswer()" name="questionNo" id="questionNo" selected="${user.getQuestionNo()}">
+                    <c:set var = "userQuestionNo" value = "${user.getQuestionNo()}"/>
                     <c:forEach items="${securityQuestions}" var="securityQuestion">
-                        <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
+                        <c:choose>
+                            <c:when test="${securityQuestion.getQuestionNo() == userQuestionNo}">
+                                <option selected="selected" value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
+                            </c:when>
+                            <c:when test="${securityQuestion.getQuestionNo() != userQuestionNo}">
+                                <option value="${securityQuestion.getQuestionNo()}">${securityQuestion.getQuestionText()}</option>
+                            </c:when>
+                        </c:choose>
                     </c:forEach>
                 </select>
             </div>
-            <div class="field_container" id="answer">
+            <div class="field_container" id="answer" style="display:block">
                 <label class="pad_top">Answer:</label>
                 <input type="text" id="securityAnswer" name="securityAnswer" value="${user.answer}">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
-            
+
             <input type="submit" class="submit" name="submit" value="Update">
         </form>
 
