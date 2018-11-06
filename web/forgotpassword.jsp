@@ -14,6 +14,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+         <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
         <script src="includes/main.js"></script>
     </head>
 
@@ -54,7 +55,7 @@
             <input type="hidden" name="action" value="forgotpw">
             <input type="submit" class="submit" name="submit" value="Send Email">
         </form>
-
+        <a href="home.jsp" class="btn btn-primary">Sign in</a>
         <footer>   
             <c:import url="/footer.jsp"/>
         </footer>
