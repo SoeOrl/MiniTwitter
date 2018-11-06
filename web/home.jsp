@@ -68,8 +68,11 @@
                                         <input class="btn btn-primary deleteTwitButton" type="submit" id="deleteTwit" value="Delete"  />
                                     </form>
                                 </c:if>
-                                ${twit.originFullname} @${twit.originUsername}<br>
+                                <div class="twitNames">
+                                ${twit.originFullname} @${twit.originUsername}
+                                </div>
                                 ${twit.twit}
+                                <hr>
                             </div>
                         </c:forEach>
                     </div>

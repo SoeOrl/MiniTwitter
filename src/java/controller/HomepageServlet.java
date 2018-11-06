@@ -119,6 +119,7 @@ public class HomepageServlet extends HttpServlet {
                                 // insert to db
                                 if (UserUtil.updateUser(user) == 1) {
                                     message = "Update Success!";
+                                    session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
                                 } else {
                                     message = "Server Error - Could not complete request";
                                 }

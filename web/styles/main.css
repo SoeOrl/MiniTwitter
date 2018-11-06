@@ -252,7 +252,8 @@ textarea {
 }
 
 .twitHomepage{
-    background-color: lightblue;
+    border-style: solid;
+    background-color: lightgrey;
     margin: 10px;
 }
 
@@ -264,10 +265,17 @@ textarea {
 .deleteTwitButton
 {
     position:relative;
-    top: -50px;
-    right: -470px !important;
+    top: -53px;
+    right: -465px !important;
     width:100px !important;
     height:50px !important;
     background: black;
+}
+.twitNames{
+    border-top: solid;
+    border-bottom:solid;
+}
+.mention{
+    color:blue !important;
 }
 footer{position: fixed; bottom: 0; height: 20px}
