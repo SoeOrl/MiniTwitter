@@ -32,19 +32,19 @@ and open the template in the editor.
 
             <div class="field_container">
                 <label class="pad_top">Full Name:</label>
-                <input type="text" id="fullName" name="fullName" value="${user.fullName}">
+                <input type="text" id="fullName" name="fullName" value=" <c:out value='${user.fullName}'/>">
                 <span id="fullName_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Username:</label>
-                <input type="text" id="username" name="username" value="${user.username}" disabled>
+                <input type="text" id="username" name="username" value="<c:out value='${user.username}'/>" disabled>
                 <span id="username_error" class="errorspan">*</span>
             </div>
 
             <div class="field_container">
                 <label class="pad_top">Email:</label>
-                <input type="email" id="email" name="email" value="${user.email}" disabled>
+                <input type="email" id="email" name="email" value="<c:out value='${user.email}'/>" disabled>
                 <span id="email_error" class="errorspan">*</span>
             </div>
             <div class="field_container">
@@ -87,7 +87,7 @@ and open the template in the editor.
             </div>
             <div class="field_container" id="answer" style="display:block">
                 <label class="pad_top">Answer:</label>
-                <input type="text" id="securityAnswer" name="securityAnswer" value="${user.answer}">
+                <input type="text" id="securityAnswer" name="securityAnswer" value="<c:out value='${user.answer}'/>">
                 <span id="securityAnswer_error" class="errorspan">*</span>
             </div>
 

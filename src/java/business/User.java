@@ -35,7 +35,7 @@ public final class User implements Serializable {
         questionNo = -1;
         answer = "";
     }
-    
+
     public User(String fullName, String email, String username, String password,
             LocalDate birthdate, int questionNo, String answer, LocalDateTime login) {
         this.publicUserInfo = new PublicUserInfo(fullName, username);
@@ -48,17 +48,18 @@ public final class User implements Serializable {
     }
 
     public User(String fromString) throws NumberFormatException, ParseException {
-        String[] data = fromString.replace("[", "").split(",");
-        this.setFullName(data[0]);
+        String[] data = fromString.replace("[", "").replace("]","").split(",");
+        this.publicUserInfo = new PublicUserInfo(data[0], data[2]);
         this.setEmail(data[1]);
-        this.setUsername(data[2]);
         this.setPassword(data[3]);
         this.setBirthdate(data[4]);
         this.setQuestionNo(data[5]);
         this.setAnswer(data[6]);
-        this.setLastLogin(data[7]);
+        DateTimeFormatter formatterNew = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        this.lastLogin = LocalDateTime.parse(data[7], formatterNew);
+
     }
-    
+
     public PublicUserInfo getPublicUserInfo() {
         return this.publicUserInfo;
     }
@@ -102,7 +103,7 @@ public final class User implements Serializable {
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
-    
+
     public void setBirthdate(String birthdate) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
         this.birthdate = LocalDate.parse(birthdate, formatter);
@@ -115,11 +116,11 @@ public final class User implements Serializable {
     public void setQuestionNo(int questionNo) {
         this.questionNo = questionNo;
     }
-    
+
     public void setQuestionNo(String questionNo) {
         this.questionNo = Integer.parseInt(questionNo);
     }
- 
+
     public String getAnswer() {
         return this.answer;
     }
@@ -127,30 +128,29 @@ public final class User implements Serializable {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
-    
-    public LocalDateTime getLastLogin()
-    {
+
+    public LocalDateTime getLastLogin() {
         return this.lastLogin;
     }
 
-    public void setLastLogin(String login)
-    {
+    public void setLastLogin(String login) {
         this.lastLogin = LocalDateTime.parse(login);
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("[%s,%s,%s,%s,%s,%s,%s]", 
-                this.getFullName(), this.getEmail(), this.getUsername(), 
-                this.getPassword(), this.getBirthdate(), this.getQuestionNo(), 
-                this.getAnswer()));
+        sb.append(String.format("[%s,%s,%s,%s,%s,%s,%s,%s]",
+                this.getFullName(), this.getEmail(), this.getUsername(),
+                this.getPassword(), this.getBirthdate(), this.getQuestionNo(),
+                this.getAnswer(), this.getLastLogin().toString()));
         return sb.toString();
     }
-    
+
     public boolean equals(User user) {
-        return this.publicUserInfo.fullName.equals(user.getFullName()) && email.equals(user.getEmail()) &&
-                this.publicUserInfo.username.equals(user.getUsername()) && password.equals(user.getPassword()) &&
-                birthdate.equals(user.getBirthdate()) && questionNo == user.questionNo &&
-                answer.equals(user.getAnswer());
+        return this.publicUserInfo.fullName.equals(user.getFullName()) && email.equals(user.getEmail())
+                && this.publicUserInfo.username.equals(user.getUsername()) && password.equals(user.getPassword())
+                && birthdate.equals(user.getBirthdate()) && questionNo == user.questionNo
+                && answer.equals(user.getAnswer());
     }
 }

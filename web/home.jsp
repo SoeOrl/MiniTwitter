@@ -28,8 +28,8 @@
                     <div class="bottomProfile">
                         <a href="#"><img class="img-responsive rounded" id="profileImage" alt="" src="http://placehold.it/75x75"></a>
                         <div class="userNameandTag">
-                            ${user.fullName}<br>
-                            @${user.username}
+                            <c:out value="${user.fullName}"/><br>
+                            <c:out value="@${user.username}"/>
                         </div>
                         <div class="row">
                             <div class="col-4 userTweets">
@@ -77,9 +77,9 @@
                                     </form>
                                 </c:if>
                                 <div class="twitNames">
-                                    ${twit.originFullname} @${twit.originUsername}
+                                    <c:out value="${twit.originFullname} @${twit.originUsername}"/>
                                 </div>
-                                ${twit.twit}
+                                    <c:out value="${twit.twit}"/>
 
                             </div>
                         </c:forEach>
@@ -94,7 +94,7 @@
                             <c:choose>
                                 <c:when test="${followUsers.following == 0}">
                                         <div>
-                                            <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a> 
+                                            <b><c:out value="${followUsers.fullName}"/></b> <a class="taggable"><c:out value="@${followUsers.username}"/></a> 
                                             <form action="homepage" method="post" class="test">
                                                 <input type="hidden" name="action" value="follow">
                                                 <input type="hidden" name="whoToFollow" value="${followUsers.username}">
@@ -105,7 +105,7 @@
                             </c:when>
                             <c:when test="${followUsers.following == 1}">
                                     <div>
-                                        <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a> 
+                                        <b><c:out value="${followUsers.fullName}"/></b> <a class="taggable"><c:out value="@${followUsers.username}"/></a> 
                                         <form action="homepage" method="post" class="test">
                                                 <input type="hidden" name="action" value="unFollow">
                                                 <input type="hidden" name="whoToFollow" value="${followUsers.username}">

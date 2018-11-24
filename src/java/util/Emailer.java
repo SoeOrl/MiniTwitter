@@ -10,6 +10,9 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.InternetAddress;
 import business.User;
+import dataaccess.UserUtil;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class Emailer {
 
@@ -61,9 +64,16 @@ public class Emailer {
 
         String subject = "Forgot Password";
         StringBuilder body = new StringBuilder();
-        
+        try
+        {
+        UserUtil.updatePassword(user, password);
+        }
+        catch (IOException|ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
         body.append(user.getFullName() + ",\n\n");
-        body.append("Here is you updated password: " + password + "\n\n");
+        body.append("Here is your updated password: " + password + "\n\n");
         body.append("We recommend changing this next time you log in.\n\n\n");
         body.append("Best,\n\n");
         body.append("The Twits");

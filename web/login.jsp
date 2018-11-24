@@ -19,6 +19,9 @@
         <header>
             <c:import url="/header.jsp"/>
         </header>
+        <c:if test="${(user != null) or (cookie.user != null)}">
+            <c:redirect url="home.jsp"></c:redirect>
+        </c:if>
         <div class="loginBox">
             <h1>Login</h1>
             <c:if test="${message != null}">
@@ -31,7 +34,7 @@
                 <p>Password</p>
                 <input type="password" name="password" placeholder="Enter Password">
                 <input type="submit" name="" value="Login">
-                <input type="checkbox" name="rememberMe" value="rememberMe">Remember me</br>
+                <input type="checkbox" name="rememberMe" value="True">Remember me</br>
                 <a href="forgotpassword.jsp">Forgot Password?</a></br>
                 <a href="signup.jsp">Sign Up</a></br>
             </form>

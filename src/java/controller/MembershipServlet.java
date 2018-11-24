@@ -19,7 +19,9 @@ import javax.servlet.http.HttpSession;
 import util.Emailer;
 
 import static dataaccess.UserUtil.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import javax.servlet.http.Cookie;
 
 public class MembershipServlet extends HttpServlet {
 
@@ -108,26 +110,60 @@ public class MembershipServlet extends HttpServlet {
                 case "login":
                     String identity = request.getParameter("identity");
                     String password = request.getParameter("password");
-
+                    String rememberMe = request.getParameter("rememberMe");
                     user = searchByUsername(identity);
-
+                    if (rememberMe == null) {
+                        rememberMe = "false";
+                    }
                     if (user == null) {
                         user = searchByEmail(identity);
                     }
+                    try {
+                        if (user == null || !user.getPassword().equals(UserUtil.hashAndSaltPassword(password, user))) {
+                            message = "Username/email or password are incorrect";
+                            forwardUrl = "/login.jsp";
+                        } else {
+                            //you HAVE TO set the cookie before anything else
+                            if (rememberMe.equalsIgnoreCase("True")) {
+                                Cookie userCookie = new Cookie("user", user.toString());
+                                userCookie.setMaxAge(24 * 60 * 60);
+                                userCookie.setPath("/");
+                                response.addCookie(userCookie);
 
-                    if (user == null || !user.getPassword().equals(password)) {
-                        message = "Username/email or password are incorrect";
-                        forwardUrl = "/login.jsp";
-                    } else {
-                        LocalDateTime now = LocalDateTime.now();
-                        user.setLastLogin(now.toString());
-                        setLastLogin(user);
-                        session.setAttribute("user", user);
-                        response.sendRedirect("homepage");
+                                try {
+                                    User testUser = new User(userCookie.getValue());
+                                    System.out.println(testUser.toString());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            LocalDateTime now = LocalDateTime.now();
+                            user.setLastLogin(now.toString());
+                            setLastLogin(user);
+                            session.setAttribute("user", user);
+                            response.sendRedirect("homepage");
+                        }
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
                     }
                     break;
 
                 case "logout":
+                    Cookie cookie = null;
+                    Cookie[] cookies = null;
+                    cookies = request.getCookies();
+                    if (cookies != null) {
+                        for (int i = 0; i < cookies.length; i++) {
+                            cookie = cookies[i];
+                            String cookieName = cookie.getName();
+                            if (cookieName.equals("user")) {
+                                cookie.setMaxAge(0);
+                                cookie.setPath("/");
+                                response.addCookie(cookie);
+                            }
+                        }
+                    }
+
                     user = null;
                     forwardUrl = "/login.jsp";
                     session.setAttribute("user", user);

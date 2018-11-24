@@ -33,14 +33,14 @@
                             </form>
                         </c:if>
                         <div class="twitNames">
-                            ${notification.twit.originFullname} @${notification.twit.originUsername}
-                        </div>
-                        ${twit.twit}
+                                    <c:out value="${twit.originFullname} @${twit.originUsername}"/>
+                                </div>
+                                    <c:out value="${twit.twit}"/>
                     </div> 
                 </c:when>
                 <c:when test="${notification.follow != null}">
                     <div>
-                        ${notification.follow.fullName}  <a class="taggable">@${notification.follow.username}</a> started following you on ${notification.postedDateTime}
+                         <c:out value="${notification.follow.fullName}"/>  <a class="taggable"> <c:out value="@${notification.follow.username}"/> </a> started following you on  <c:out value="${notification.postedDateTime}"/>
                     </div>
                 </c:when>
             </c:choose>
