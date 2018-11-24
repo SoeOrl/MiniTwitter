@@ -8,6 +8,8 @@ package controller;
 import business.User;
 import business.Twit;
 import business.UserValidator;
+import dataaccess.FollowsUtil;
+import dataaccess.NotificationUtil;
 import dataaccess.UserUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -129,6 +131,20 @@ public class HomepageServlet extends HttpServlet {
 
                         forwardUrl = "/profile.jsp";
                         break;
+                    
+                    case "follow":
+                        String toFollow = request.getParameter("whoToFollow");
+                        FollowsUtil.insertFollow(user, toFollow);
+                        forwardUrl = "/home.jsp";
+                        updateHomepage(session);
+                        break;
+                    
+                    case "unFollow":
+                        toFollow = request.getParameter("whoToFollow");
+                        FollowsUtil.stopFollowing(user, toFollow);
+                        forwardUrl = "/home.jsp";
+                        updateHomepage(session);
+                        break;
                     default:
                         message = "Unknown Server Error";
                         forwardUrl = "/home.jsp";
@@ -170,5 +186,9 @@ public class HomepageServlet extends HttpServlet {
         session.setAttribute("userTwits", getTwitsForUsername(user.getUsername()));
         session.setAttribute("numTwits", getNumUserTwits(user));
         session.setAttribute("allUsers", UserUtil.getAllUsers());
+        session.setAttribute("listToFollow", FollowsUtil.getAllfollowing(user));
+        session.setAttribute("following", FollowsUtil.getFollowing(user));
+        session.setAttribute("followed", FollowsUtil.getFollowed(user));
+        session.setAttribute("Notifications", NotificationUtil.getNotifications(user));
     }
 }

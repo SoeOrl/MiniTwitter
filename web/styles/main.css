@@ -280,4 +280,14 @@ textarea {
 .taggable{
     color:blue !important;
 }
+
+.test{
+    visibility: visible;
+    margin: 0px;
+}
+
+.followButton{
+    width: 420px;
+    
+}
 footer{position: fixed; bottom: 0; height: 20px}

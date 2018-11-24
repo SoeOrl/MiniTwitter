@@ -31,13 +31,21 @@
                             ${user.fullName}<br>
                             @${user.username}
                         </div>
-                        <div class="userTweets">
-
-                            TWEETS<br>
-                            ${numTwits}
+                        <div class="row">
+                            <div class="col-4 userTweets">
+                                TWEETS<br>
+                                ${numTwits}
+                            </div>
+                            <div class="col-4 userTweets">
+                                Following<br>
+                                ${following}
+                            </div>
+                            <div class="col-4 userTweets">
+                                Followed<br>
+                                ${followed}
+                            </div>
                         </div>
                     </div>
-
                     <div class="panel panel-default panel-custom" id="Trending">
                         <div class="panel-heading">
                             <h3 class="panel-title">
@@ -69,10 +77,10 @@
                                     </form>
                                 </c:if>
                                 <div class="twitNames">
-                                ${twit.originFullname} @${twit.originUsername}
+                                    ${twit.originFullname} @${twit.originUsername}
                                 </div>
                                 ${twit.twit}
-                                
+
                             </div>
                         </c:forEach>
                     </div>
@@ -82,19 +90,38 @@
                 <div class="col-3 ">
                     Who to Follow
                     <div class="whoToFollow rounded">
-                         <c:forEach items="${allUsers}" var="followUsers">
-                             <div>
-                                 <c:if test="${followUsers.username != user.username}">
-                                     <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a><hr>
-                                 </c:if>
-                             </div>
-                         </c:forEach>
-                    </div>
-                </div>
+                        <c:forEach items="${listToFollow}" var="followUsers">
+                            <c:choose>
+                                <c:when test="${followUsers.following == 0}">
+                                        <div>
+                                            <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a> 
+                                            <form action="homepage" method="post" class="test">
+                                                <input type="hidden" name="action" value="follow">
+                                                <input type="hidden" name="whoToFollow" value="${followUsers.username}">
+                                                <input class="btn btn-primary followButton" type="submit" id="followButton" value="Follow">
+                                            </form>
+                                            <hr>
+                                        </div>
+                            </c:when>
+                            <c:when test="${followUsers.following == 1}">
+                                    <div>
+                                        <b>${followUsers.fullName}</b> <a class="taggable">@${followUsers.username}</a> 
+                                        <form action="homepage" method="post" class="test">
+                                                <input type="hidden" name="action" value="unFollow">
+                                                <input type="hidden" name="whoToFollow" value="${followUsers.username}">
+                                                <input class="btn btn-primary followButton" type="submit" id="followButton" value="UnFollow">
+                                            </form>
+                                                <hr>
+                                    </div>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
             </div>
         </div>
-        <footer>   
-            <c:import url="/footer.jsp"/>
-        </footer>
-    </body>
+    </div>
+</div>
+<footer>   
+    <c:import url="/footer.jsp"/>
+</footer>
+</body>
 </html>

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import util.Emailer;
 
 import static dataaccess.UserUtil.*;
+import java.time.LocalDateTime;
 
 public class MembershipServlet extends HttpServlet {
 
@@ -81,7 +82,7 @@ public class MembershipServlet extends HttpServlet {
                         user.setBirthdate(request.getParameter("birthdate"));
                         user.setQuestionNo(Integer.parseInt(request.getParameter("questionNo")));
                         user.setAnswer(request.getParameter("answer"));
-
+                        user.setLastLogin(LocalDateTime.now().toString());
                         UserValidator userValidator = new UserValidator(user, request.getParameter("confirmPassword"));
 
                         if (userValidator.isValid()) {
@@ -118,6 +119,9 @@ public class MembershipServlet extends HttpServlet {
                         message = "Username/email or password are incorrect";
                         forwardUrl = "/login.jsp";
                     } else {
+                        LocalDateTime now = LocalDateTime.now();
+                        user.setLastLogin(now.toString());
+                        setLastLogin(user);
                         session.setAttribute("user", user);
                         response.sendRedirect("homepage");
                     }

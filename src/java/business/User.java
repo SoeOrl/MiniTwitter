@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -24,6 +25,7 @@ public final class User implements Serializable {
     private LocalDate birthdate;
     private int questionNo;
     private String answer;
+    private LocalDateTime lastLogin;
 
     public User() {
         publicUserInfo = new PublicUserInfo();
@@ -35,13 +37,14 @@ public final class User implements Serializable {
     }
     
     public User(String fullName, String email, String username, String password,
-            LocalDate birthdate, int questionNo, String answer) {
+            LocalDate birthdate, int questionNo, String answer, LocalDateTime login) {
         this.publicUserInfo = new PublicUserInfo(fullName, username);
         this.email = email;
         this.password = password;
         this.birthdate = birthdate;
         this.questionNo = questionNo;
         this.answer = answer;
+        this.lastLogin = login;
     }
 
     public User(String fromString) throws NumberFormatException, ParseException {
@@ -53,6 +56,7 @@ public final class User implements Serializable {
         this.setBirthdate(data[4]);
         this.setQuestionNo(data[5]);
         this.setAnswer(data[6]);
+        this.setLastLogin(data[7]);
     }
     
     public PublicUserInfo getPublicUserInfo() {
@@ -123,7 +127,16 @@ public final class User implements Serializable {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+    
+    public LocalDateTime getLastLogin()
+    {
+        return this.lastLogin;
+    }
 
+    public void setLastLogin(String login)
+    {
+        this.lastLogin = LocalDateTime.parse(login);
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

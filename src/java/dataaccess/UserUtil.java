@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UserUtil {
@@ -26,8 +27,8 @@ public class UserUtil {
 
             String preparedSQL
                     = "INSERT INTO user(fullName, email, username, password, "
-                    + "birthdate, questionNo, answer) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    + "birthdate, questionNo, answer, lastLogin) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             //add values to the above SQL statement and execute it.
             PreparedStatement ps = connection.prepareStatement(preparedSQL);
@@ -38,6 +39,7 @@ public class UserUtil {
             ps.setDate(5, Date.valueOf(user.getBirthdate()));
             ps.setString(6, String.valueOf(user.getQuestionNo()));
             ps.setString(7, user.getAnswer());
+            ps.setTimestamp(8, Timestamp.valueOf(user.getLastLogin()));
 
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -79,7 +81,7 @@ public class UserUtil {
                 return new User(result.getString("fullName"), result.getString("email"),
                         result.getString("username"), result.getString("password"),
                         result.getDate("birthdate").toLocalDate(), result.getInt("questionNo"),
-                        result.getString("answer"));
+                        result.getString("answer"), result.getTimestamp("lastLogin").toLocalDateTime());
             } else {
                 return null;
             }
@@ -180,5 +182,30 @@ public class UserUtil {
             }
         }
         return null;
+    }
+    
+    public static void setLastLogin(User user) throws IOException, ClassNotFoundException
+    {
+          try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+            String username = "root";
+            String password = "root";
+            Connection connection = DriverManager.getConnection(dbURL, username, password);
+
+            String sql = "UPDATE user SET lastLogin = ? WHERE email = ? ";
+            
+            PreparedStatement ps = connection.prepareStatement(sql);
+            
+            ps.setTimestamp(1, Timestamp.valueOf(user.getLastLogin()));
+            ps.setString(2, user.getEmail());
+            
+            ps.executeUpdate();
+            
+             } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
     }
 }

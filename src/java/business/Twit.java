@@ -24,6 +24,12 @@ public final class Twit {
     int twitId;
     LocalDateTime postedDateTime;
 
+    public Twit(String originUsername, String originFullname,LocalDateTime postedDateTime, String twit)
+    {
+        this.originUsername = originUsername;
+        this.originFullname = originFullname;
+        this.twit = twit;
+    }
     public Twit() {
         this(null, null, "", -1, LocalDateTime.now());
     }
@@ -48,7 +54,7 @@ public final class Twit {
 
     ArrayList<String> parseMentionedUsernames() {
         ArrayList<String> mentionedUsernames = new ArrayList<>();
-        Matcher matcher = Pattern.compile("(?<=\\s@)[\\d|\\w]+").matcher(twit);
+        Matcher matcher = Pattern.compile("(?<=\\s@)[\\d|\\w]+").matcher(this.twit);
         while(matcher.find()) {
             mentionedUsernames.add(matcher.group());
         }
