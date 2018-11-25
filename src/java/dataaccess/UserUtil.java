@@ -232,7 +232,7 @@ public class UserUtil {
         return null;
     }
 
-    public static void setLastLogin(User user) throws IOException, ClassNotFoundException {
+    public static void setLastLogin(User user, LocalDateTime now) throws IOException, ClassNotFoundException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
@@ -244,7 +244,7 @@ public class UserUtil {
 
             PreparedStatement ps = connection.prepareStatement(sql);
 
-            ps.setTimestamp(1, Timestamp.valueOf(user.getLastLogin()));
+            ps.setTimestamp(1, Timestamp.valueOf(now));
             ps.setString(2, user.getEmail());
 
             ps.executeUpdate();

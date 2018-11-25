@@ -138,8 +138,7 @@ public class MembershipServlet extends HttpServlet {
                                 }
                             }
                             LocalDateTime now = LocalDateTime.now();
-                            user.setLastLogin(now.toString());
-                            setLastLogin(user);
+                            setLastLogin(user,now);
                             session.setAttribute("user", user);
                             response.sendRedirect("homepage");
                         }
