@@ -125,7 +125,7 @@ public class MembershipServlet extends HttpServlet {
                         } else {
                             //you HAVE TO set the cookie before anything else
                             if (rememberMe.equalsIgnoreCase("True")) {
-                                Cookie userCookie = new Cookie("user", user.toString());
+                                Cookie userCookie = new Cookie("user", user.getUsername());
                                 userCookie.setMaxAge(24 * 60 * 60);
                                 userCookie.setPath("/");
                                 response.addCookie(userCookie);
