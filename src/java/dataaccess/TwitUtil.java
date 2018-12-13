@@ -280,12 +280,13 @@ public class TwitUtil {
     }
 
     public static ArrayList<Twit> findAllTwits(String searchText) throws IOException, ClassNotFoundException {
+        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             String query
                     = "SELECT username, fullName, twit "
@@ -314,6 +315,14 @@ public class TwitUtil {
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
+            }
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
 

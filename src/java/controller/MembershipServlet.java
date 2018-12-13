@@ -129,13 +129,6 @@ public class MembershipServlet extends HttpServlet {
                                 userCookie.setMaxAge(24 * 60 * 60);
                                 userCookie.setPath("/");
                                 response.addCookie(userCookie);
-
-                                try {
-                                    User testUser = new User(userCookie.getValue());
-                                    System.out.println(testUser.toString());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                             }
                             LocalDateTime now = LocalDateTime.now();
                             setLastLogin(user,now);

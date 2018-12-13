@@ -12,7 +12,8 @@
         <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>       
+        <link rel="stylesheet" href="styles/main.css" type="text/css"/>  
+
         <title>MiniTwitter</title>
     </head>
     <body>

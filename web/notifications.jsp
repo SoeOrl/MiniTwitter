@@ -13,6 +13,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="styles/main.css" type="text/css"/>
         <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
+        <%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
     </head>
     <body>
         <header>
@@ -33,9 +34,9 @@
                             </form>
                         </c:if>
                         <div class="twitNames">
-                                    <c:out value="${twit.originFullname} @${twit.originUsername}"/>
+                                    <c:out value="${fn:escapeXml(notification.twit.originFullname)} @${fn:escapeXml(notification.twit.originUsername)}"/>
                                 </div>
-                                    <c:out value="${twit.twit}"/>
+                                    ${notification.twit.twit}
                     </div> 
                 </c:when>
                 <c:when test="${notification.follow != null}">

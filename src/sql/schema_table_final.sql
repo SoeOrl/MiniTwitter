@@ -30,7 +30,7 @@ CREATE TABLE `user` (
 CREATE TABLE `twit` (
   `twitId` varchar(36) NOT NULL,
   `userId` varchar(36) NOT NULL,
-  `twit` varchar(300) NOT NULL,
+  `twit` varchar(1000) NOT NULL,
   `postedDateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`twitId`),
   UNIQUE KEY `twitId` (`twitId`),

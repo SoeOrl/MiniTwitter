@@ -36,12 +36,13 @@ public class NotificationUtil {
     }
 
     public static int getNewTweets(User user, ArrayList<Notifications> notifications) throws IOException, ClassNotFoundException {
+        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -64,17 +65,28 @@ public class NotificationUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
         return 0;
     }
 
     public static int getNewFollows(User user, ArrayList<Notifications> notifications) throws IOException, ClassNotFoundException {
+         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -97,6 +109,16 @@ public class NotificationUtil {
         } catch (SQLException e) {
             for (Throwable t : e) {
                 t.printStackTrace();
+            }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
         return 0;

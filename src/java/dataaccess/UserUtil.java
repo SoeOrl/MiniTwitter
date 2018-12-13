@@ -234,12 +234,13 @@ public class UserUtil {
     }
 
     public static void setLastLogin(User user, LocalDateTime now) throws IOException, ClassNotFoundException {
+         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             String sql = "UPDATE user SET lastLogin = ? WHERE email = ? ";
 
@@ -254,7 +255,18 @@ public class UserUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
+  
     }
 
     public static String getSalt() {
