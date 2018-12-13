@@ -58,7 +58,7 @@ public class NotificationUtil {
 
             while (result.next()) {
                 notifications.add(new Notifications(new Twit(result.getString("username"), result.getString("fullname"),
-                        result.getTimestamp("postedDateTime").toLocalDateTime(), result.getString("twit"))));
+                        result.getString("twit"), result.getTimestamp("postedDateTime").toLocalDateTime())));
             }
         } catch (SQLException e) {
             for (Throwable t : e) {

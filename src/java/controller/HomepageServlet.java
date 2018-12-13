@@ -9,6 +9,7 @@ import business.User;
 import business.Twit;
 import business.UserValidator;
 import dataaccess.FollowsUtil;
+import static dataaccess.HashtagUtil.getTrendingHashtags;
 import dataaccess.NotificationUtil;
 import dataaccess.UserUtil;
 import java.io.IOException;
@@ -93,11 +94,11 @@ public class HomepageServlet extends HttpServlet {
                         break;
 
                     case "deleteTwit":
-                        String twitIdS = request.getParameter("twitToDelete");
-                        int twitId = Integer.parseInt(twitIdS);
-                        deleteTwit(user, twitId);
+                        String twitId = request.getParameter("twitToDeleteId");
+                        String twitText = request.getParameter("twitToDeleteText");
+                        deleteTwit(user, twitId, twitText);
                         updateHomepage(session);
-                        
+
                         forwardUrl = "/home.jsp";
                         break;
 
@@ -131,14 +132,14 @@ public class HomepageServlet extends HttpServlet {
 
                         forwardUrl = "/profile.jsp";
                         break;
-                    
+
                     case "follow":
                         String toFollow = request.getParameter("whoToFollow");
                         FollowsUtil.insertFollow(user, toFollow);
                         forwardUrl = "/home.jsp";
                         updateHomepage(session);
                         break;
-                    
+
                     case "unFollow":
                         toFollow = request.getParameter("whoToFollow");
                         FollowsUtil.stopFollowing(user, toFollow);
@@ -151,12 +152,12 @@ public class HomepageServlet extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                message = e.getMessage();
+                message = "Server Error: " + e.getMessage();
                 forwardUrl = "/home.jsp";
 
             } finally {
                 session.setAttribute("message", message);
-                
+
                 if (!forwardUrl.isEmpty()) {
                     getServletContext()
                             .getRequestDispatcher(forwardUrl)
@@ -190,5 +191,6 @@ public class HomepageServlet extends HttpServlet {
         session.setAttribute("following", FollowsUtil.getFollowing(user));
         session.setAttribute("followed", FollowsUtil.getFollowed(user));
         session.setAttribute("Notifications", NotificationUtil.getNotifications(user));
+        session.setAttribute("trendingHashtags", getTrendingHashtags());
     }
 }
