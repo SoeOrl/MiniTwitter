@@ -98,7 +98,19 @@ function validateName()
 function validateInvalidChar()
 {       
         var errorDiv = document.getElementById("errorMessage");
+        try {
         var formElements = document.forms["signup"].getElementsByTagName("input");
+        }
+        catch (err)
+        {
+            try {
+                var formElements = document.forms["changeProfile"].getElementsByTagName("input");
+            }
+            catch(err)
+            {
+                console.log("Weirdness and stuff and things")
+            }
+        }
         var regex = /'+/;
         var bools = true;
         //dont iterate over the submit button
@@ -133,13 +145,16 @@ function validatePasswordSecurity()
         var errorDiv = document.getElementById("errorMessage");
 	var password = document.getElementById("password");
 	var passwordError = document.getElementById("password_error");
-	var regex = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).+$/;
+	var regex = /[A-Z]/;
+        var regex1 = /[a-z]/;
+        var regex2 = /\d/;
+        var regex3 = /.{8,}/;
        
-        if(!regex.test(password.value))
+        if(!(regex.test(password.value) && regex1.test(password.value) && regex2.test(password.value) && regex3.test(password.value))) 
 	{
 		password.style.backgroundColor = "yellow";
 		passwordError.style.display = "inline";
-                errorDiv.innerHTML += "Error! Password must contain at least: one uppercase, lowercase, and number<br>";
+                errorDiv.innerHTML += "Error! Password must contain at least: one uppercase, lowercase, and number. As well as being atleast 8 characters long<br>";
                 errorDiv.style.display="inline";
 		return false;
 	}

@@ -21,7 +21,7 @@ and open the template in the editor.
         </header>
 
         <form id="changeProfile" action="homepage" method="post" onsubmit="return validateForm();">
-            <input type="hidden" name="action" value="updateProfile" id="updateProfile">
+
             <div class="header"><h1>Edit your information</h1></div>
             <div class="spacer"></div>
 
@@ -49,7 +49,8 @@ and open the template in the editor.
             </div>
             <div class="field_container">
                 <label class="pad_top">Profile Picture:</label>
-                <input type="file" name="file" accept="image/png, image/jpeg"/>
+                <input type="file" name="file" id="file" accept="image/png, image/jpeg"/>
+                <span id="file_error" class="errorspan">*</span>
             </div>
             <div class="field_container">
                 <label class="pad_top">Password:</label>
@@ -92,6 +93,7 @@ and open the template in the editor.
             </div>
 
             <input type="submit" class="submit" name="submit" value="Update">
+                        <input type="hidden" name="action" value="updateProfile" id="updateProfile">
         </form>
 
         <footer>   

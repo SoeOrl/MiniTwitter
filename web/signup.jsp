@@ -47,7 +47,8 @@ and open the template in the editor.
             </div>
             <div class="field_container">
                 <label class="pad_top">Profile Picture:</label>
-                <input type="file" name="file" accept="image/png, image/jpeg"/>
+                <input type="file" name="file" id="file" accept="image/png, image/jpeg"/>
+                <span id="file_error" class="errorspan">*</span>
             </div>
             <div class="field_container">
                 <label class="pad_top">Password:</label>
