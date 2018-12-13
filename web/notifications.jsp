@@ -25,18 +25,14 @@
             <c:choose>
                 <c:when test="${notification.twit != null}">
                     <div class="twitHomepage">
+
+                        <div class="twitContainer">
                         <img class="img-responsive rounded" id="twitImage" alt="" src="http://placehold.it/50x50">
-                        <c:if test="${notification.twit.originUsername == user.username}">
-                            <form action="homepage" method="post" class="deleteTwitForm">
-                                <input type="hidden" name="action" value="deleteTwit">
-                                <input type="hidden" name="twitToDelete" value="${notification.twit.twitId}">
-                                <input class="btn btn-primary deleteTwitButton" type="submit" id="deleteTwit" value="Delete"  />
-                            </form>
-                        </c:if>
                         <div class="twitNames">
                                     <c:out value="${fn:escapeXml(notification.twit.originFullname)} @${fn:escapeXml(notification.twit.originUsername)}"/>
                                 </div>
                                     ${notification.twit.twit}
+                    </div>
                     </div> 
                 </c:when>
                 <c:when test="${notification.follow != null}">
