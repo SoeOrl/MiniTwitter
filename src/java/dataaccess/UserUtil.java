@@ -31,26 +31,27 @@ public class UserUtil {
             Connection connection = DriverManager.getConnection(dbURL, username, password);
 
             String preparedSQL
-                    = "INSERT INTO user(fullName, email, username, password, "
+                    = "INSERT INTO user(userId, fullName, email, username, password, "
                     + "birthdate, questionNo, answer, lastLogin,salt) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             //add values to the above SQL statement and execute it.
             String salt = getSalt();
             PreparedStatement ps = connection.prepareStatement(preparedSQL);
-            ps.setString(1, user.getFullName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getUsername());
+            ps.setObject(1, user.getUuid());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getUsername());
             try {
-                ps.setString(4, hashAndSaltPassword(user.getPassword(), salt));
+                ps.setString(5, hashAndSaltPassword(user.getPassword(), salt));
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-            ps.setDate(5, Date.valueOf(user.getBirthdate()));
-            ps.setString(6, String.valueOf(user.getQuestionNo()));
-            ps.setString(7, user.getAnswer());
-            ps.setTimestamp(8, Timestamp.valueOf(user.getLastLogin()));
-            ps.setString(9, salt);
+            ps.setDate(6, Date.valueOf(user.getBirthdate()));
+            ps.setString(7, String.valueOf(user.getQuestionNo()));
+            ps.setString(8, user.getAnswer());
+            ps.setTimestamp(9, Timestamp.valueOf(user.getLastLogin()));
+            ps.setString(10, salt);
             int length = salt.getBytes().length;
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -89,7 +90,7 @@ public class UserUtil {
             ResultSet result = ps.executeQuery();
 
             if (result.next()) {
-                return new User(result.getString("fullName"), result.getString("email"),
+                return new User(result.getString("userId"), result.getString("fullName"), result.getString("email"),
                         result.getString("username"), result.getString("password"),
                         result.getDate("birthdate").toLocalDate(), result.getInt("questionNo"),
                         result.getString("answer"), result.getTimestamp("lastLogin").toLocalDateTime());
@@ -233,12 +234,13 @@ public class UserUtil {
     }
 
     public static void setLastLogin(User user, LocalDateTime now) throws IOException, ClassNotFoundException {
+         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             String sql = "UPDATE user SET lastLogin = ? WHERE email = ? ";
 
@@ -253,7 +255,18 @@ public class UserUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
+  
     }
 
     public static String getSalt() {
@@ -289,12 +302,13 @@ public class UserUtil {
     }
 
     private static String getSaltFromDatabase(User user) throws IOException, ClassNotFoundException {
+        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             String sql = "Select user.salt From user WHERE user.userID=(Select user.userID FROM user WHERE user.username = ?);";
 
@@ -311,7 +325,53 @@ public class UserUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
+        
+        return null;
+    }
+    
+    public static ArrayList<PublicUserInfo> findAllUsers(String searchText) throws IOException, ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
+            String username = "root";
+            String password = "root";
+            Connection connection = DriverManager.getConnection(dbURL, username, password);
+
+            String query =
+                    "SELECT * "
+                    + "FROM user "
+                    + "WHERE username like ? "
+                    + "OR fullName like ?";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            //add value to the above SQL statement and execute it.
+            searchText = "%" + searchText + "%";
+            ps.setString(1, searchText);
+            ps.setString(2, searchText);
+
+            ResultSet result = ps.executeQuery();
+
+            ArrayList<PublicUserInfo> users = new ArrayList<>();
+            while (result.next()) {
+                users.add(new PublicUserInfo(result.getString("fullName"), result.getString("username")));
+            }
+            
+            return users;
+            
+        } catch (SQLException e) {
+            for (Throwable t : e) {
+                t.printStackTrace();
+            }
+        }
+
         return null;
     }
 }

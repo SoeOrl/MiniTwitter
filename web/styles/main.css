@@ -12,7 +12,7 @@ body {
 }
 
 .twitter {
-   	background-color: #F0FFFF; 
+    background-color: #F0FFFF; 
 }
 form {
     margin: 30px auto;
@@ -108,14 +108,14 @@ select {
 .loginBox {
     margin-top: 100px;
     margin-left: 100px;
-   width: 400px;
+    width: 400px;
     height: 520px;
     background: blue;
     color: white;
     top: auto;
     left: auto;
     box-sizing: border-box;
-/*    transform: translate(-50%,-50%);*/
+    /*    transform: translate(-50%,-50%);*/
     padding: 70px 30px; 
 }
 
@@ -155,7 +155,7 @@ select {
 }
 
 #tweetButton {
-    
+
     width: 100px;
     font-size: 20px;
     line-height: 20px;
@@ -214,7 +214,7 @@ textarea {
     margin-top: 100px;
     height: auto;
     background-color: white;
-    
+
 }
 #composeTweet{
     background-color: lightblue;
@@ -245,7 +245,7 @@ textarea {
     position:relative;
     z-index: 1;
     padding: 5px;
-    
+
 }
 
 .showTweets{
@@ -253,7 +253,7 @@ textarea {
     max-width: 600px;
 }
 
-.twitHomepage{
+.twitContainer{
     border-style: solid;
     background-color: lightgrey;
     margin: 10px;
@@ -288,6 +288,61 @@ textarea {
 
 .followButton{
     width: 420px;
-    
+
+}
+
+.searchBarContainer {
+    display: inline-block;
+    width: 30%;
+    border: 1px solid black;
+    border-radius: 5em;
+    padding: .1em;
+    vertical-align: bottom;
+}
+
+.searchForm {
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+
+.searchBar {
+    display: inline-block;
+    width: 85%;
+    float: left;
+    background: none;
+    margin-left: .5em;
+}
+
+.searchButton {
+    display: inline-block;
+    width: 10%;
+    background: url("../icons/search.png") no-repeat;
+    float: right;
+    vertical-align: bottom;
+}
+
+.searchResultsHeader {
+    margin: 10px;
+}
+
+.searchResultsContainer {
+    width: 100%;
+    min-height: 500px;
+    background: lightgrey;
+    text-align: center;
+}
+
+.searchCategoryHeader {
+    border-bottom: 2px solid black;
+}
+
+.searchCategoryContainer {
+    display: inline-block;
+    background: white;
+    width: 25%;
+    min-height: 250px;
+    margin: 25px;
+    vertical-align: top;
 }
 footer{position: fixed; bottom: 0; height: 20px}

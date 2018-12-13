@@ -8,6 +8,14 @@
         <servlet-name>HomepageServlet</servlet-name>
         <servlet-class>controller.HomepageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HashtagServlet</servlet-name>
+        <servlet-class>controller.HashtagServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>controller.SearchServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MembershipServlet</servlet-name>
         <url-pattern>/membership</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>HomepageServlet</servlet-name>
         <url-pattern>/homepage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HashtagServlet</servlet-name>
+        <url-pattern>/hashtag</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

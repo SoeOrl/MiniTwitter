@@ -10,8 +10,8 @@ package business;
  * @author jdodso227
  */
 public class PublicUserInfo {
-    public String fullName;
-    public String username;
+    String fullName;
+    String username;
     
     public PublicUserInfo() {
         this.fullName = "";

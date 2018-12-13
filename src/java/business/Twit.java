@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
+import java.util.UUID;
 
 /**
  *
@@ -20,50 +21,62 @@ public final class Twit {
     String originUsername;
     String originFullname;
     ArrayList<String> mentionedUsernames;
+    ArrayList<Hashtag> hashtags;
     String twit;
-    int twitId;
+    UUID uuid;
     LocalDateTime postedDateTime;
+    
+    private final static String mentionsRegexString = "(?<=\\s)(@[\\d|\\w]+)";
+    private final static String hashtagsRegexString = "(?<=[\\s]|^)(#[\\w|\\d]+)";
 
-    public Twit(String originUsername, String originFullname,LocalDateTime postedDateTime, String twit)
-    {
-        this.originUsername = originUsername;
-        this.originFullname = originFullname;
-        this.twit = twit;
-    }
     public Twit() {
-        this(null, null, "", -1, LocalDateTime.now());
+        this(null, null, "", UUID.randomUUID().toString(), LocalDateTime.now());
     }
 
     public Twit(String originUsername, String originFullname, String twit) {
-        this(originUsername, originFullname, twit, -1, LocalDateTime.now());
+        this(originUsername, originFullname, twit, UUID.randomUUID().toString(), LocalDateTime.now());
     }
 
     public Twit(String originUsername, String originFullname, String twit, LocalDateTime postedDateTime) {
-        this(originUsername, originFullname, twit, -1, postedDateTime);
+        this(originUsername, originFullname, twit, UUID.randomUUID().toString(), postedDateTime);
     }
     
-    public Twit(String originUsername, String originFullname, String twit, int twitId, LocalDateTime postedDateTime) {
+    public Twit(String originUsername, String originFullname, String twit, String twitId, LocalDateTime postedDateTime) {
         this.originUsername = originUsername;
         this.originFullname = originFullname;
         this.twit = twit;
-        this.twitId = twitId;
+        this.uuid = UUID.fromString(twitId);
         this.postedDateTime = postedDateTime;
         this.mentionedUsernames = parseMentionedUsernames();
-        wrapMentionsInHtml();
+        this.hashtags = parseHashtags();
+        wrapMentionsAndHashtagsInHtml();
     }
-
+    
     ArrayList<String> parseMentionedUsernames() {
         ArrayList<String> mentionedUsernames = new ArrayList<>();
-        Matcher matcher = Pattern.compile("(?<=\\s@)[\\d|\\w]+").matcher(this.twit);
+        Matcher matcher = Pattern.compile(mentionsRegexString).matcher(this.twit);
         while(matcher.find()) {
-            mentionedUsernames.add(matcher.group());
+            mentionedUsernames.add(matcher.group().replace("@", ""));
         }
         
         return mentionedUsernames;
     }
     
-    void wrapMentionsInHtml() {
-        this.twit = twit.replaceAll("(?<=\\s)(@[\\d|\\w]+)", "<a class=\"taggable\">$1</a>");
+    ArrayList<Hashtag> parseHashtags() {
+        ArrayList<Hashtag> hashtags = new ArrayList<>();
+        Matcher matcher = Pattern.compile(hashtagsRegexString).matcher(this.twit);
+        
+        while(matcher.find()) {
+            hashtags.add(new Hashtag(matcher.group()));
+        }
+        
+        return hashtags;
+    }
+    
+    void wrapMentionsAndHashtagsInHtml() {
+        this.twit = twit.replaceAll(mentionsRegexString, "<a class=\"taggable\">$1</a>");
+        this.twit = twit.replaceAll(hashtagsRegexString, "<a href=\"hashtag?tag=$1\" class=\"taggable\">$1</a>");
+        this.twit = twit.replaceAll("tag=#", "tag=%23");
     }
     
     public String getOriginUsername() {
@@ -81,14 +94,19 @@ public final class Twit {
     public void setTwit(String twit) {
         this.twit = twit;
         this.mentionedUsernames = parseMentionedUsernames();
+        this.hashtags = parseHashtags();
     }
     
-    public int getTwitId() {
-        return twitId;
+    public String getUuid() {
+        return uuid.toString();
     }
 
     public ArrayList<String> getMentionedUsernames() {
         return mentionedUsernames;
+    }
+    
+    public ArrayList<Hashtag> getHashtags() {
+        return hashtags;
     }
 
     public LocalDateTime getPostedDateTime() {

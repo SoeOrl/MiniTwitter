@@ -23,17 +23,46 @@ insert into twit(userId, twit) values
 (2, 'Now I\'m talking to myself');
 
 
-# see all twits from or about a username
-use twitterdb;
-select distinct originUsername, originFullname, named_twits.twitid, twit, postedDateTime from
-(select twitid, twit, twit.userid, username as originUsername, fullname as originFullname, postedDateTime from twit
-	join user on twit.userid = user.userid) as named_twits
-left join 
-	(select username as mentionedUsername, twitid from usermention 
-	join user on usermention.mentionedUserId = user.userid) as named_mentions
-on named_twits.twitid = named_mentions.twitid
-where originUsername = '<username>' or mentionedUsername = '<username>'
-order by postedDateTime;
+# see all twits for a user
+SET @username = '<some-username>';
+SELECT DISTINCT
+    originUsername,
+    originFullname,
+    named_twits.twitid,
+    twit,
+    postedDateTime
+FROM
+    (SELECT 
+        twitid,
+            twit,
+            twit.userid,
+            username AS originUsername,
+            fullname AS originFullname,
+            postedDateTime
+    FROM
+        twit
+    JOIN user ON twit.userid = user.userid) AS named_twits
+        LEFT JOIN
+    (SELECT 
+        username AS mentionedUsername, twitid
+    FROM
+        usermention
+    JOIN user ON usermention.mentionedUserId = user.userid) AS named_mentions ON named_twits.twitid = named_mentions.twitid
+WHERE
+    originUsername = @username
+        OR mentionedUsername = @username
+        OR named_twits.userid IN (SELECT 
+            followedId
+        FROM
+            follows
+        WHERE
+            userId = (SELECT 
+                    userid
+                FROM
+                    user
+                WHERE
+                    username = @username))
+ORDER BY postedDateTime DESC;
 
 
 # manually inserting two test users

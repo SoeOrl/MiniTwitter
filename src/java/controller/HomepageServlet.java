@@ -9,6 +9,7 @@ import business.User;
 import business.Twit;
 import business.UserValidator;
 import dataaccess.FollowsUtil;
+import static dataaccess.HashtagUtil.getTrendingHashtags;
 import dataaccess.NotificationUtil;
 import dataaccess.UserUtil;
 import java.io.IOException;
@@ -22,6 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static dataaccess.TwitUtil.*;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
 
 /**
  *
@@ -35,12 +40,40 @@ public class HomepageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
+ User user = null;
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        String message = "";
         String forwardUrl = "";
+        String message = "";
+        Cookie cookie = null;
+        Cookie[] cookies = null;
+        cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                cookie = cookies[i];
+                String cookieName = cookie.getName();
+                if (cookieName.equals("user")) {
+                   String test = cookie.getValue();
+                    try {
+                        user = UserUtil.searchByUsername(test);
+                         session.setAttribute("user", user);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(HomepageServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
+                }
+            }
+        }
+        if (user == null)
+        {
+
+        user = (User) session.getAttribute("user");   
+        }
+        if (user ==null)
+        {
+            forwardUrl = "/login.jsp";
+        }
+        else{       
         try {
             updateHomepage(session);
             forwardUrl = "/home.jsp";
@@ -49,23 +82,50 @@ public class HomepageServlet extends HttpServlet {
             message = "Server Error - Could not retrieve your twits or other users' information";
             forwardUrl = "/login.jsp";
         }
+        }
+         
 
         getServletContext()
                 .getRequestDispatcher("/home.jsp")
                 .forward(request, response);
+    
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        User user = null;
+        HttpSession session = request.getSession();
         String forwardUrl = "";
         String message = "";
+        Cookie cookie = null;
+        Cookie[] cookies = null;
+        cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                cookie = cookies[i];
+                String cookieName = cookie.getName();
+                if (cookieName.equals("user")) {
+                   String test = cookie.getValue();
+                    try {
+                        user = UserUtil.searchByUsername(test);
+                        session.setAttribute("user", user);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(HomepageServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
+                }
+            }
+        }
+        if (user == null)
+        {
+
+        user = (User) session.getAttribute("user");   
+        }
         String action = request.getParameter("action");
-        HttpSession session = request.getSession();
 
-        User user = (User) session.getAttribute("user");
+
+
 
         if (user == null) {
             message = "Server Error - User could not be validated";
@@ -93,11 +153,11 @@ public class HomepageServlet extends HttpServlet {
                         break;
 
                     case "deleteTwit":
-                        String twitIdS = request.getParameter("twitToDelete");
-                        int twitId = Integer.parseInt(twitIdS);
-                        deleteTwit(user, twitId);
+                        String twitId = request.getParameter("twitToDeleteId");
+                        String twitText = request.getParameter("twitToDeleteText");
+                        deleteTwit(user, twitId, twitText);
                         updateHomepage(session);
-                        
+
                         forwardUrl = "/home.jsp";
                         break;
 
@@ -131,14 +191,14 @@ public class HomepageServlet extends HttpServlet {
 
                         forwardUrl = "/profile.jsp";
                         break;
-                    
+
                     case "follow":
                         String toFollow = request.getParameter("whoToFollow");
                         FollowsUtil.insertFollow(user, toFollow);
                         forwardUrl = "/home.jsp";
                         updateHomepage(session);
                         break;
-                    
+
                     case "unFollow":
                         toFollow = request.getParameter("whoToFollow");
                         FollowsUtil.stopFollowing(user, toFollow);
@@ -151,12 +211,12 @@ public class HomepageServlet extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                message = e.getMessage();
+                message = "Server Error: " + e.getMessage();
                 forwardUrl = "/home.jsp";
 
             } finally {
                 session.setAttribute("message", message);
-                
+
                 if (!forwardUrl.isEmpty()) {
                     getServletContext()
                             .getRequestDispatcher(forwardUrl)
@@ -190,5 +250,6 @@ public class HomepageServlet extends HttpServlet {
         session.setAttribute("following", FollowsUtil.getFollowing(user));
         session.setAttribute("followed", FollowsUtil.getFollowed(user));
         session.setAttribute("Notifications", NotificationUtil.getNotifications(user));
+        session.setAttribute("trendingHashtags", getTrendingHashtags());
     }
 }

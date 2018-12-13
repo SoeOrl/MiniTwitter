@@ -20,7 +20,7 @@
             <c:import url="/header.jsp"/>
         </header>
         <c:if test="${(user != null) or (cookie.user != null)}">
-            <c:redirect url="home.jsp"></c:redirect>
+            <c:redirect url="homepage"></c:redirect>
         </c:if>
         <div class="loginBox">
             <h1>Login</h1>

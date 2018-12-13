@@ -48,6 +48,8 @@ public class MembershipServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String forwardUrl = "/login.jsp";
+        
+        request.getSession().setAttribute("message", "");
         getServletContext()
                 .getRequestDispatcher(forwardUrl)
                 .forward(request, response);
@@ -125,17 +127,10 @@ public class MembershipServlet extends HttpServlet {
                         } else {
                             //you HAVE TO set the cookie before anything else
                             if (rememberMe.equalsIgnoreCase("True")) {
-                                Cookie userCookie = new Cookie("user", user.toString());
+                                Cookie userCookie = new Cookie("user", user.getUsername());
                                 userCookie.setMaxAge(24 * 60 * 60);
                                 userCookie.setPath("/");
                                 response.addCookie(userCookie);
-
-                                try {
-                                    User testUser = new User(userCookie.getValue());
-                                    System.out.println(testUser.toString());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                             }
                             LocalDateTime now = LocalDateTime.now();
                             setLastLogin(user,now);

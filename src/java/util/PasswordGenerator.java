@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class PasswordGenerator {
     private final static int PASSWORD_LENGTH = 8;
-    private final static String SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyz";
+    private final static String SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
     private PasswordGenerator() {}
     

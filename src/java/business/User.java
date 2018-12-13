@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  *
@@ -19,6 +20,7 @@ public final class User implements Serializable {
     //define attributes fullname, ...
 
     //define set/get methods for all attributes.
+    private UUID uuid;
     private PublicUserInfo publicUserInfo;
     private String email;
     private String password;
@@ -28,6 +30,7 @@ public final class User implements Serializable {
     private LocalDateTime lastLogin;
 
     public User() {
+        uuid = UUID.randomUUID();
         publicUserInfo = new PublicUserInfo();
         email = "";
         password = "";
@@ -38,6 +41,14 @@ public final class User implements Serializable {
 
     public User(String fullName, String email, String username, String password,
             LocalDate birthdate, int questionNo, String answer, LocalDateTime login) {
+        
+        this(UUID.randomUUID().toString(), fullName, email, username, password, birthdate,
+                questionNo, answer, login);
+    }
+    
+    public User(String uuid, String fullName, String email, String username, String password,
+            LocalDate birthdate, int questionNo, String answer, LocalDateTime login) {
+        this.uuid = UUID.fromString(uuid);
         this.publicUserInfo = new PublicUserInfo(fullName, username);
         this.email = email;
         this.password = password;
@@ -58,6 +69,10 @@ public final class User implements Serializable {
         DateTimeFormatter formatterNew = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         this.lastLogin = LocalDateTime.parse(data[7], formatterNew);
 
+    }
+    
+    public String getUuid() {
+        return this.uuid.toString();
     }
 
     public PublicUserInfo getPublicUserInfo() {

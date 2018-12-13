@@ -26,12 +26,13 @@ import java.util.ArrayList;
 public class FollowsUtil {
 
     public static int insertFollow(User user, String userFollow) throws IOException, ClassNotFoundException {
+       Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -49,18 +50,29 @@ public class FollowsUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
         return 0;
     }
     
     //stop following
     public static int stopFollowing(User user, String userFollow) throws IOException, ClassNotFoundException {
+        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+             connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -77,18 +89,29 @@ public class FollowsUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
         return 0;
     }
 
     //how many people you are following
     public static int getFollowing(User user) throws IOException, ClassNotFoundException {
+       Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -110,18 +133,29 @@ public class FollowsUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
         return 0;
     }
 
     //how many people are following you
     public static int getFollowed(User user) throws IOException, ClassNotFoundException {
+        Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             // insert twit first
             final StringBuilder preparedSQL = new StringBuilder();
@@ -143,17 +177,28 @@ public class FollowsUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+            return 1;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
         return 0;
     }
 
     public static ArrayList<Follow> getAllfollowing(User user) throws IOException, ClassNotFoundException {
+       Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://localhost:3306/twitterdb?serverTimezone=America/Denver&useSSL=false";
             String username = "root";
             String password = "root";
-            Connection connection = DriverManager.getConnection(dbURL, username, password);
+            connection = DriverManager.getConnection(dbURL, username, password);
 
             
             final StringBuilder preparedSQL = new StringBuilder();
@@ -176,7 +221,17 @@ public class FollowsUtil {
             for (Throwable t : e) {
                 t.printStackTrace();
             }
+
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
+      
         return null;
     }
 }

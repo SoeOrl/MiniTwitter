@@ -9,10 +9,12 @@
 <html>
     <head>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="styles/bootstrap.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>       
-        <title>JSP Page</title>
+        <link rel="stylesheet" href="styles/main.css" type="text/css"/>  
+
+        <title>MiniTwitter</title>
     </head>
     <body>
         <header>
@@ -50,7 +52,11 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 Trends
-
+                                <c:forEach items="${trendingHashtags}" var="hashtag">
+                                    <div class="trendingHashtag">
+                                        <a href="hashtag?tag=${fn:replace(hashtag,"#","%23")}">${hashtag}</a>
+                                    </div>
+                                </c:forEach>
                             </h3>
                         </div>
                     </div>
@@ -67,20 +73,22 @@
                     </div>
                     <div class="showTweets rounded">
                         <c:forEach items="${userTwits}" var="twit">
-                            <div class="twitHomepage">
+                            <div class="twitContainer">
                                 <img class="img-responsive rounded" id="twitImage" alt="" src="http://placehold.it/50x50">
                                 <c:if test="${twit.originUsername == user.username}">
                                     <form action="homepage" method="post" class="deleteTwitForm">
                                         <input type="hidden" name="action" value="deleteTwit">
-                                        <input type="hidden" name="twitToDelete" value="${twit.twitId}">
+                                        <input type="hidden" name="twitToDeleteId" value="${twit.uuid}">
+                                        <input type="hidden" name="twitToDeleteText" value="${fn:escapeXml(twit.twit)}">
                                         <input class="btn btn-primary deleteTwitButton" type="submit" id="deleteTwit" value="Delete"  />
                                     </form>
                                 </c:if>
                                 <div class="twitNames">
                                     <c:out value="${twit.originFullname} @${twit.originUsername}"/>
                                 </div>
-                                    <c:out value="${twit.twit}"/>
-
+                                <div class="twitText">
+                                    ${twit.twit}
+                                </div>
                             </div>
                         </c:forEach>
                     </div>
@@ -93,35 +101,35 @@
                         <c:forEach items="${listToFollow}" var="followUsers">
                             <c:choose>
                                 <c:when test="${followUsers.following == 0}">
-                                        <div>
-                                            <b><c:out value="${followUsers.fullName}"/></b> <a class="taggable"><c:out value="@${followUsers.username}"/></a> 
-                                            <form action="homepage" method="post" class="test">
-                                                <input type="hidden" name="action" value="follow">
-                                                <input type="hidden" name="whoToFollow" value="${followUsers.username}">
-                                                <input class="btn btn-primary followButton" type="submit" id="followButton" value="Follow">
-                                            </form>
-                                            <hr>
-                                        </div>
-                            </c:when>
-                            <c:when test="${followUsers.following == 1}">
                                     <div>
                                         <b><c:out value="${followUsers.fullName}"/></b> <a class="taggable"><c:out value="@${followUsers.username}"/></a> 
                                         <form action="homepage" method="post" class="test">
-                                                <input type="hidden" name="action" value="unFollow">
-                                                <input type="hidden" name="whoToFollow" value="${followUsers.username}">
-                                                <input class="btn btn-primary followButton" type="submit" id="followButton" value="UnFollow">
-                                            </form>
-                                                <hr>
+                                            <input type="hidden" name="action" value="follow">
+                                            <input type="hidden" name="whoToFollow" value="${followUsers.username}">
+                                            <input class="btn btn-primary followButton" type="submit" id="followButton" value="Follow">
+                                        </form>
+                                        <hr>
                                     </div>
-                        </c:when>
-                    </c:choose>
-                </c:forEach>
+                                </c:when>
+                                <c:when test="${followUsers.following == 1}">
+                                    <div>
+                                        <b><c:out value="${followUsers.fullName}"/></b> <a class="taggable"><c:out value="@${followUsers.username}"/></a> 
+                                        <form action="homepage" method="post" class="test">
+                                            <input type="hidden" name="action" value="unFollow">
+                                            <input type="hidden" name="whoToFollow" value="${followUsers.username}">
+                                            <input class="btn btn-primary followButton" type="submit" id="followButton" value="UnFollow">
+                                        </form>
+                                        <hr>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<footer>   
-    <c:import url="/footer.jsp"/>
-</footer>
-</body>
+        <footer>   
+            <c:import url="/footer.jsp"/>
+        </footer>
+    </body>
 </html>
