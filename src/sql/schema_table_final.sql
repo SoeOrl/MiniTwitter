@@ -25,7 +25,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `userID` (`userID`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `twit` (
   `twitId` varchar(36) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE `twit` (
   UNIQUE KEY `twitId` (`twitId`),
   KEY `userId` (`userId`),
   CONSTRAINT `twit_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `usermention` (
   `mentionId` varchar(36) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `usermention` (
   CONSTRAINT `usermention_ibfk_1` FOREIGN KEY (`originUserId`) REFERENCES `user` (`userid`) ON DELETE CASCADE,
   CONSTRAINT `usermention_ibfk_2` FOREIGN KEY (`mentionedUserId`) REFERENCES `user` (`userid`),
   CONSTRAINT `usermention_ibfk_3` FOREIGN KEY (`twitId`) REFERENCES `twit` (`twitid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `follows` (
   `userId` varchar(36) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `follows` (
   KEY `userId` (`userId`),
   CONSTRAINT `follows_ibfk_1` FOREIGN KEY (`followedId`) REFERENCES `user` (`userid`) ON DELETE CASCADE,
   CONSTRAINT `follows_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`userid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `hashtag` (
   `hashtagId` varchar(36) NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE `hashtag` (
   PRIMARY KEY (`hashtagId`),
   UNIQUE KEY `hashtagId` (`hashtagId`),
   UNIQUE KEY `text` (`text`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `twitHashtag` (
   `twitHashtagId` varchar(36) NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `twitHashtag` (
   KEY `hashtagId` (`hashtagId`),
   CONSTRAINT `twithashtag_ibfk_1` FOREIGN KEY (`twitId`) REFERENCES `twit` (`twitid`) ON DELETE CASCADE,
   CONSTRAINT `twithashtag_ibfk_2` FOREIGN KEY (`hashtagId`) REFERENCES `hashtag` (`hashtagid`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
